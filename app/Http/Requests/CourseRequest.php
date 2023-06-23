@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CourseRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class CourseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,33 @@ class CourseRequest extends FormRequest
      */
     public function rules(): array
     {
+        switch (request()->method()) {
+            case 'POST':
+                return $this->postValidation();
+
+                break;
+
+            case 'PUT':
+                return $this->putValidation();
+                break;
+        }
+    }
+
+    public function postValidation(): array
+    {
         return [
-            //
+            'label' => ['required', 'string', 'max:50', Rule::unique('courses')],
+            'milestone_one' => ['required'],
+            'milestone_two' => ['required']
+        ];
+    }
+
+    public function putValidation(): array
+    {
+        return [
+            'label' => ['required', 'string', 'max:50', Rule::unique('courses')->ignore($this->course->id)],
+            'milestone_one' => ['required'],
+            'milestone_two' => ['required']
         ];
     }
 }

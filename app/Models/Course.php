@@ -14,4 +14,19 @@ class Course extends Model
         'milestone_one',
         'milestone_two',
     ];
+
+    /**
+     * 
+     * Relationship functions
+     */
+
+    public function milestoneOne()
+    {
+        return $this->belongsTo(Milestone::class, 'milestone_one');
+    }
+
+    public function milestoneTwo()
+    {
+        return $this->belongsTo(Milestone::class, 'milestone_two');
+    }
 }

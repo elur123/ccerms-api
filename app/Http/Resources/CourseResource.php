@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use App\Http\Resources\MilestoneResource;
 class CourseResource extends JsonResource
 {
     /**
@@ -14,6 +15,13 @@ class CourseResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'label' => $this->label,
+            'milestone_one' => $this->milestone_one,
+            'milestone_two' => $this->milestone_two,
+            'milestoneOne' => new MilestoneResource($this->whenLoaded('milestoneOne')),
+            'milestoneTwo' => new MilestoneResource($this->whenLoaded('milestoneTwo')),
+        ];
     }
 }

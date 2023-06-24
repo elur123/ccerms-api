@@ -8,7 +8,10 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 
 use App\Observers\UserObserver;
+use App\Observers\GroupObserver;
+
 use App\Models\User;
+use App\Models\Group;
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -23,7 +26,8 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     protected $observers = [
-        User::class => [UserObserver::class],
+        User::class => [ UserObserver::class ],
+        Group::class => [ GroupObserver::class ],
     ];
 
     /**

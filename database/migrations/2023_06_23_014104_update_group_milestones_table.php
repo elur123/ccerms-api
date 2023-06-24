@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('group_milestones', function (Blueprint $table) {
             $table->foreignId('group_id')->constrained('groups');
             $table->foreignId('milestone_id')->constrained('milestones');
-            $table->foreignId('milestone_list_id')->constrained('milestone_lists');
+            $table->foreignId('milestone_list_id')->constrained('milestone_lists')->nullable();
         });
     }
 

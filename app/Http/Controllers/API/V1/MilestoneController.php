@@ -40,6 +40,8 @@ class MilestoneController extends Controller
      */
     public function show(Milestone $milestone)
     {
+        $milestone->load('capstoneType', 'milestoneList');
+
         return response()->json([
             'milestone' => new MilestoneResource($milestone)
         ], 200);

@@ -8,6 +8,11 @@ use App\Http\Controllers\API\V1\CapstoneTypeController;
 use App\Http\Controllers\API\V1\MilestoneController;
 use App\Http\Controllers\API\V1\MilestoneListController;
 use App\Http\Controllers\API\V1\CourseController;
+use App\Http\Controllers\API\V1\GroupController;
+use App\Http\Controllers\API\V1\GroupMilestoneController;
+use App\Http\Controllers\API\V1\GroupMemberController;
+use App\Http\Controllers\API\V1\GroupAdviserController;
+use App\Http\Controllers\API\V1\GroupPanelController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -26,4 +31,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('milestones', MilestoneController::class);
 
     Route::resource('milestone-lists', MilestoneListController::class);
+
+    Route::resource('groups', GroupController::class);
+
+    Route::put('group-milestone/{groupmilestone}', [GroupMilestoneController::class, 'update'])->name('group-milestone.update');
+
+    Route::post('group-member/{group}', [GroupMemberController::class, 'store'])->name('group-member.store');
+    Route::delete('group-member/{group}/{member}', [GroupMemberController::class, 'destroy'])->name('group-member.destroy');
+
+    Route::post('group-adviser/{group}', [GroupAdviserController::class, 'store'])->name('group-adviser.store');
+    Route::delete('group-adviser/{group}/{adviser}', [GroupAdviserController::class, 'destroy'])->name('group-adviser.destroy');
+
+    Route::post('group-panel/{group}', [GroupPanelController::class, 'store'])->name('group-panel.store');
+    Route::delete('group-panel/{group}/{panel}', [GroupPanelController::class, 'destroy'])->name('group-panel.destroy');
 });

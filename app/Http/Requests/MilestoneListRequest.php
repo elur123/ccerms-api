@@ -4,7 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Closure;
 
+use App\Models\MilestoneList;
 class MilestoneListRequest extends FormRequest
 {
     /**
@@ -37,20 +39,47 @@ class MilestoneListRequest extends FormRequest
 
     public function postValidation(): array
     {
+        $find = MilestoneList::query()
+        ->where([
+            'order_by' => request()->order_by,
+            'milestone_id' => request()->milestone_id
+        ])
+        ->first();
+
         return [
-            'title' => ['required', 'string', 'max:80', Rule::unique('milestone_lists')],
+            'title' => ['required', 'string', 'max:80'],
             'description' => ['required', 'string', 'max:1080'],
             'percent' => ['required', 'numeric', 'max:100'],
+            'order_by' => ['required', 'numeric', function (string $attribute, mixed $value, Closure $fail) use ($find) {
+
+                if ($find !== null) {
+                    $fail("The order by is invalid.");
+                }
+            }],
             'milestone_id' => ['required']
         ];
     }
 
     public function putValidation(): array
     {
+        $find = MilestoneList::query()
+        ->where([
+            ['id', '!=',  request()->milestone_list->id],
+            ['order_by', request()->order_by],
+            ['milestone_id', request()->milestone_id]
+        ])
+        ->first();
+
         return [
-            'title' => ['required', 'string', 'max:80', Rule::unique('milestone_lists')->ignore($this->milestone_list->id)],
+            'title' => ['required', 'string', 'max:80'],
             'description' => ['required', 'string', 'max:1080'],
             'percent' => ['required', 'numeric', 'max:100'],
+            'order_by' => ['required', 'numeric', function (string $attribute, mixed $value, Closure $fail) use ($find) {
+
+                if ($find !== null) {
+                    $fail("The order by is invalid.");
+                }
+            }],
             'milestone_id' => ['required']
         ];
     }

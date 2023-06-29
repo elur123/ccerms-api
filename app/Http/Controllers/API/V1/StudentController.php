@@ -4,32 +4,33 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\CourseRequest;
-use App\Http\Resources\CourseResource;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UserResource;
 
-use App\Models\Course;
-class CourseController extends Controller
+use App\Models\User;
+class StudentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $courses = Course::query()
-        ->with('milestoneOne', 'milestoneTwo')
+        $students = User::query()
+        ->student()
         ->get();
 
+
         return response()->json([
-            'courses' => CourseResource::collection($courses)
+            'students' => UserResource::collection($students)
         ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CourseRequest $request)
+    public function store(RegisterRequest $request)
     {
-        Course::create($request->validated());
+        User::create($request->validated());
 
         return $this->index();
     }
@@ -37,19 +38,19 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Course $course)
+    public function show(User $student)
     {
         return response()->json([
-            'course' => new CourseResource($course  )
+            'student' => new UserResource($student)
         ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CourseRequest $request, Course $course)
+    public function update(RegisterRequest $request, User $student)
     {
-        $course->update($request->validated());
+        $student->update($request->validated());
 
         return $this->index();
     }
@@ -57,10 +58,8 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy(string $id)
     {
-        $course->delete();
-
-        return $this->index();
+        //
     }
 }

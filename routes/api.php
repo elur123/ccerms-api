@@ -13,6 +13,7 @@ use App\Http\Controllers\API\V1\GroupMilestoneController;
 use App\Http\Controllers\API\V1\GroupMemberController;
 use App\Http\Controllers\API\V1\GroupAdviserController;
 use App\Http\Controllers\API\V1\GroupPanelController;
+use App\Http\Controllers\API\V1\StudentController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -20,7 +21,12 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
-}); 
+});
+
+Route::prefix('public')->name('public.')->group(function () {
+
+    Route::get('courses', [CourseController::class, 'index'])->name('courses');
+});
 
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -44,4 +50,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('group-panel/{group}', [GroupPanelController::class, 'store'])->name('group-panel.store');
     Route::delete('group-panel/{group}/{panel}', [GroupPanelController::class, 'destroy'])->name('group-panel.destroy');
+
+    Route::resource('students', StudentController::class);
 });

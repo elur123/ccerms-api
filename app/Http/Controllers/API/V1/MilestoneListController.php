@@ -29,9 +29,9 @@ class MilestoneListController extends Controller
      */
     public function store(MilestoneListRequest $request)
     {
-        MilestoneList::create($request->validated());
+        $list = MilestoneList::create($request->validated());
 
-        return $this->index();
+        return $this->show($list);
     }
 
     /**
@@ -39,8 +39,14 @@ class MilestoneListController extends Controller
      */
     public function show(MilestoneList $milestone_list)
     {
+
+        $milestoneLists = MilestoneList::query()
+        ->where('milestone_id', $milestone_list->milestone_id)
+        ->with('milestone')
+        ->get();
+
         return response()->json([
-            'milestone_lists' => new MilestoneListResource($milestone_list)
+            'milestone_lists' => MilestoneListResource::collection($milestoneLists)
         ], 200);
     }
 
@@ -49,9 +55,11 @@ class MilestoneListController extends Controller
      */
     public function update(MilestoneListRequest $request, MilestoneList $milestone_list)
     {
+
+
         $milestone_list->update($request->validated());
 
-        return $this->index();
+        return $this->show($milestone_list);
     }
 
     /**
@@ -61,6 +69,6 @@ class MilestoneListController extends Controller
     {
         $milestone_list->delete();
 
-        return $this->index();
+        return $this->show($milestone_list);
     }
 }

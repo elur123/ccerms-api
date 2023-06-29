@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 use App\Enums\RoleEnum;
+use App\Enums\StatusEnum;
 class UserSeeder extends Seeder
 {
     /**
@@ -19,7 +20,8 @@ class UserSeeder extends Seeder
             'name' => 'Admin dev',
             'email' => 'dev@gmail.com',
             'password' => Hash::make('developer'),
-            'role_id' => RoleEnum::ADMIN->value
+            'role_id' => RoleEnum::ADMIN->value,
+            'status_id' => StatusEnum::APPROVED->value
         ]);
     }
 }

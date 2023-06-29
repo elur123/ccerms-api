@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('milestone_lists', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->tinyText('description');
-            $table->integer('percent');
-            $table->integer('order_by');
-            $table->timestamps();
+            $table->string('label');
         });
     }
 
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('milestone_lists');
+        Schema::dropIfExists('statuses');
     }
 };

@@ -14,6 +14,7 @@ class MilestoneList extends Model
         'description',
         'percent',
         'milestone_id',
+        'order_by',
     ];
 
     /**

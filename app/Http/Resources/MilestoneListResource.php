@@ -21,6 +21,7 @@ class MilestoneListResource extends JsonResource
             'description' => $this->description,
             'percent' => $this->percent,
             'milestone_id' => $this->milestone_id,
+            'order_by' => $this->order_by,
             'milestone' => new MilestoneResource($this->whenLoaded('milestone'))
         ];
     }

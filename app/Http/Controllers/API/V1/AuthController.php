@@ -8,7 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
-
+use App\Enums\StatusEnum;
 
 use App\Models\User;
 class AuthController extends Controller
@@ -31,10 +31,17 @@ class AuthController extends Controller
             ]);
         }
 
+        if ($user->status_id !== StatusEnum::APPROVED->value) {
+            throw ValidationException::withMessages([
+                'status' => ['Wait for the admin to verify your account.'],
+            ]);
+        }
+
         $user->tokens()->delete();
      
         return response()->json([
             'message' => 'Successfully login',
+            'user' => $user,
             'token' => $user->createToken('api_token')->plainTextToken
         ], 200);
     }

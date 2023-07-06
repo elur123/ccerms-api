@@ -30,7 +30,7 @@ class GroupMilestone extends Model
         return $this->belongsTo(Milestone::class, 'milestone_id');
     }
 
-    public function milesoneList()
+    public function currentMilestone()
     {
         return $this->belongsTo(MilestoneList::class, 'milestone_list_id');
     }

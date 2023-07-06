@@ -13,6 +13,30 @@ class UserObserver
     public function creating(User $user): void
     {
         $user->status_id = StatusEnum::PENDING->value;
+
+        switch ($user->role_id) {
+            case RoleEnum::ADVISER->value:
+                $user->can_advise = true;
+                break;
+
+            case RoleEnum::PANEL->value:
+                $user->can_panel = true;
+                break;
+
+            case RoleEnum::SUBJECT_TEACHER->value:
+                $user->can_teach = true;
+                break;
+
+            case RoleEnum::RESEARCH_COORDINATOR->value: 
+            case RoleEnum::ADMIN->value:
+                $user->can_panel = true;
+                $user->can_advise = true;
+                $user->can_teach = true;
+                break;
+            
+            default:
+                break;
+        }
     }
 
     /**
@@ -33,7 +57,7 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        //
+        
     }
 
 }

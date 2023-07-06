@@ -14,12 +14,12 @@ class GroupObserver
 
         $group->groupMilestone()->create([
             'milestone_id' => $course->milestone_one,
-            'milestone_list_id' => 2
+            'milestone_list_id' => null
         ]);
 
         $group->groupMilestone()->create([
             'milestone_id' => $course->milestone_two,
-            'milestone_list_id' => 3
+            'milestone_list_id' => null
         ]);
     }
 

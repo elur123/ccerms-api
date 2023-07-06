@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('group_milestones', function (Blueprint $table) {
-            $table->foreignId('group_id')->constrained('groups');
-            $table->foreignId('milestone_id')->constrained('milestones');
-            $table->foreignId('milestone_list_id')->nullable()->constrained('milestone_lists');
+        Schema::create('section_students', function (Blueprint $table) {
+            $table->id();
+            $table->foreignUuid('section_id')->constrained('sections');
+            $table->foreignUuid('user_id')->constrained('users');
         });
     }
 
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('group_milestones');
+        Schema::dropIfExists('section_students');
     }
 };

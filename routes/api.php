@@ -7,7 +7,11 @@ use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\CapstoneTypeController;
 use App\Http\Controllers\API\V1\MilestoneController;
 use App\Http\Controllers\API\V1\MilestoneListController;
+use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\CourseController;
+use App\Http\Controllers\API\V1\SectionController;
+use App\Http\Controllers\API\V1\SectionStudentController;
+use App\Http\Controllers\API\V1\SectionGroupController;
 use App\Http\Controllers\API\V1\GroupController;
 use App\Http\Controllers\API\V1\GroupMilestoneController;
 use App\Http\Controllers\API\V1\GroupMemberController;
@@ -29,8 +33,20 @@ Route::prefix('public')->name('public.')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    
+    Route::get('users/teachers', [UserController::class, 'teachers'])->name('users.teachers'); 
+    Route::put('users/{user}/status', [UserController::class, 'status'])->name('users.status'); 
+    Route::resource('users', UserController::class);
 
     Route::resource('courses', CourseController::class);
+
+    Route::resource('sections', SectionController::class);
+
+    Route::post('section-student/{section}', [SectionStudentController::class, 'store'])->name('section-student.store');
+    Route::delete('section-student/{section}/{student}', [SectionStudentController::class, 'destroy'])->name('section-student.destroy');
+
+    Route::post('section-group/{section}', [SectionGroupController::class, 'store'])->name('section-group.store');
+    Route::delete('section-group/{section}/{group}', [SectionGroupController::class, 'destroy'])->name('section-group.destroy');
 
     Route::resource('capstonetypes', CapstoneTypeController::class);
 
@@ -51,5 +67,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('group-panel/{group}', [GroupPanelController::class, 'store'])->name('group-panel.store');
     Route::delete('group-panel/{group}/{panel}', [GroupPanelController::class, 'destroy'])->name('group-panel.destroy');
 
+    Route::put('students/{student}/status', [StudentController::class, 'status'])->name('students.status'); 
     Route::resource('students', StudentController::class);
 });

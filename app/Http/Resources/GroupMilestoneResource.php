@@ -24,7 +24,7 @@ class GroupMilestoneResource extends JsonResource
             'milestone_list_id' => $this->milestone_list_id,
             'group' => new GroupResource($this->whenLoaded('group')),
             'milestone' => new MilestoneResource($this->whenLoaded('milestone')),
-            'milestoneList' => new MilestoneListResource($this->whenLoaded('milestoneList'))
+            'currentMilestone' => new MilestoneListResource($this->whenLoaded('currentMilestone'))
         ];
     }
 }

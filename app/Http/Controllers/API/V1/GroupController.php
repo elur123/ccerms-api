@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\GroupRequest;
 use App\Http\Resources\GroupResource;
+use App\Services\GroupAvailablePersonnelMembers;
 
 use App\Models\Group;
 class GroupController extends Controller
@@ -37,10 +38,17 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Group $group)
+    public function show(Group $group, GroupAvailablePersonnelMembers $gapm)
     {
+        $group->load('course', 'capstoneType', 'groupMilestone.currentMilestone', 'groupMilestone.milestone.milestoneList', 'members', 'advisers', 'panels');
+
+        $users_available = $gapm->execute($group);
+
         return response()->json([
-            'group' => new GroupResource($group)
+            'group' => new GroupResource($group),
+            'members' => $users_available['members'],
+            'advisers' => $users_available['advisers'],
+            'panels' => $users_available['panels']
         ], 200);
     }
 

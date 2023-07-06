@@ -6,24 +6,26 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Enums\RoleEnum;
+use App\Services\GetTeachers;
 
 use App\Models\User;
-class StudentController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $students = User::query()
-        ->with('studentDetails.course', 'status', 'role')
-        ->student()
+        $users = User::query()
+        ->with('role', 'status')
+        ->where('role_id', '!=', RoleEnum::STUDENT->value)
+        ->where('role_id', '!=', RoleEnum::ADMIN->value)
         ->get();
 
-
         return response()->json([
-            'students' => UserResource::collection($students)
-        ], 200);
+            'users' => UserResource::collection($users)
+        ]);
     }
 
     /**
@@ -39,46 +41,43 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $student)
+    public function show(User $user)
     {
-        $student->load('studentDetails.course', 'status', 'role');
-
         return response()->json([
-            'student' => new UserResource($student)
-        ], 200);
+            'user' => new UserResource($user)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserRequest $request, User $student)
+    public function update(UserRequest $request, User $user)
     {
-        $student->update($request->validated());
-
-        if (isset($request->course_id)) 
-        {
-            $student->studentDetails()->update([
-                'course_id' => request()->course_id
-            ]);
-        }
-
+        $user->update($request->validated());
         return $this->index();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
         //
     }
 
-    public function status(Request $request, User $student)
+    public function status(Request $request, User $user)
     {
-        $student->update([
+        $user->update([
             'status_id' => $request->status
         ]);
         
         return $this->index();
+    }
+
+    public function teachers(GetTeachers $teachers)
+    {
+        return response()->json([
+            'teachers' => $teachers->execute()
+        ], 200);
     }
 }

@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('mobile_number')->nullable();
             $table->tinyText('address')->nullable();
+            $table->boolean('can_advise')->default(false);
+            $table->boolean('can_panel')->default(false);
+            $table->boolean('can_teach')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

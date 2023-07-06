@@ -13,4 +13,19 @@ class StudentDetail extends Model
         'user_id',
         'course_id'
     ];
+
+    /**
+     * 
+     * Relationship functions
+     */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
+    }
 }

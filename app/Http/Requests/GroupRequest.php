@@ -47,8 +47,8 @@ class GroupRequest extends FormRequest
     public function putValidation(): array
     {
         return [
-            'group_name' =>  ['required', 'string', 'max:80', Rule::unique('groups')],
-            'title' => ['required', 'string', 'max:1040', Rule::unique('groups')],
+            'group_name' =>  ['required', 'string', 'max:80', Rule::unique('groups')->ignore($this->group->id)],
+            'title' => ['required', 'string', 'max:1040', Rule::unique('groups')->ignore($this->group->id)],
             'course_id' => ['required'],
             'capstone_type_id' => ['required']
         ];

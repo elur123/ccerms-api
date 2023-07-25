@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('section_students', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('section_id')->constrained('sections');
-            $table->foreignUuid('user_id')->constrained('users');
         });
     }
 

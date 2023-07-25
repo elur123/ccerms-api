@@ -16,6 +16,7 @@ class Section extends Model
         'time_end_at',
         'year_start_at',
         'year_end_at',
+        'section_type_id',
         'user_id'
     ]; 
 
@@ -23,6 +24,11 @@ class Section extends Model
      * 
      * Relationship functions
      */
+
+    public function sectionType()
+    {
+        return $this->belongsTo(SectionType::class, 'section_type_id');
+    }
 
     public function teacher()
     {

@@ -16,7 +16,7 @@ class SectionController extends Controller
     public function index()
     {
         $sections = Section::query()
-        ->with('teacher')
+        ->with('teacher', 'sectionType', 'students', 'groups')
         ->get();
 
         return response()->json([
@@ -39,7 +39,7 @@ class SectionController extends Controller
      */
     public function show(Section $section)
     {
-        $section->load('teacher');
+        $section->load('teacher', 'sectionType', 'students', 'groups');
 
         return response()->json([
             'section' => new SectionResource($section)

@@ -17,7 +17,7 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::query()
-        ->with('course', 'capstoneType', 'groupMilestone', 'members')
+        ->with('course', 'capstoneType', 'groupMilestone', 'members', 'panels')
         ->get();
 
         return response()->json([

@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\GroupResource;
 
 class SectionResource extends JsonResource
 {
@@ -23,8 +24,12 @@ class SectionResource extends JsonResource
             'time_end_at' => $this->time_end_at,
             'year_start_at' => $this->year_start_at,
             'year_end_at' => $this->year_end_at,
+            'section_type_id' => $this->section_type_id,
             'user_id' => $this->user_id,
-            'teacher' => new UserResource($this->whenLoaded('teacher'))
+            'type' => $this->whenLoaded('sectionType'),
+            'teacher' => new UserResource($this->whenLoaded('teacher')),
+            'students' => UserResource::collection($this->whenLoaded('students')),
+            'groups' => GroupResource::collection($this->whenLoaded('groups'))
         ];
     }
 }

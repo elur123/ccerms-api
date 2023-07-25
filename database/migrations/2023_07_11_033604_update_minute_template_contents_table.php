@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('section_groups', function (Blueprint $table) {
-            $table->id();
+        Schema::table('minute_template_contents', function (Blueprint $table) {
+            $table->foreignId('minute_template_id')->constrained('minute_templates');
         });
     }
 
@@ -21,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('section_groups');
+        Schema::dropIfExists('minute_template_contents');
     }
 };

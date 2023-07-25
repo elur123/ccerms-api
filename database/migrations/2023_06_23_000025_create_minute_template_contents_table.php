@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('section_groups', function (Blueprint $table) {
+        Schema::create('minute_template_contents', function (Blueprint $table) {
             $table->id();
+            $table->string('label');
+            $table->integer('order');
+            $table->timestamps();
         });
     }
 
@@ -21,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('section_groups');
+        Schema::dropIfExists('minute_template_contents');
     }
 };

@@ -18,6 +18,10 @@ use App\Http\Controllers\API\V1\GroupMemberController;
 use App\Http\Controllers\API\V1\GroupAdviserController;
 use App\Http\Controllers\API\V1\GroupPanelController;
 use App\Http\Controllers\API\V1\StudentController;
+use App\Http\Controllers\API\V1\DefenseScheduleController;
+use App\Http\Controllers\API\V1\DefensePanelController;
+use App\Http\Controllers\API\V1\DefenseTypeController;
+use App\Http\Controllers\API\V1\MinuteTemplateController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -38,23 +42,33 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('users/{user}/status', [UserController::class, 'status'])->name('users.status'); 
     Route::resource('users', UserController::class);
 
+    Route::put('students/{student}/status', [StudentController::class, 'status'])->name('students.status'); 
+    Route::resource('students', StudentController::class);
+
+    Route::resource('groups', GroupController::class);
+
     Route::resource('courses', CourseController::class);
 
     Route::resource('sections', SectionController::class);
 
+    Route::get('section-student', [SectionStudentController::class, 'availableStudents'])->name('section-student.available-students');
     Route::post('section-student/{section}', [SectionStudentController::class, 'store'])->name('section-student.store');
     Route::delete('section-student/{section}/{student}', [SectionStudentController::class, 'destroy'])->name('section-student.destroy');
 
+    Route::get('section-group', [SectionGroupController::class, 'availableGroups'])->name('section-student.available-groups');
     Route::post('section-group/{section}', [SectionGroupController::class, 'store'])->name('section-group.store');
     Route::delete('section-group/{section}/{group}', [SectionGroupController::class, 'destroy'])->name('section-group.destroy');
+
+    Route::put('defenses/{defense}/status', [DefenseScheduleController::class, 'status'])->name('defenses.status');
+    Route::resource('defenses', DefenseScheduleController::class);
+    
+    Route::resource('defensetypes', DefenseTypeController::class);
 
     Route::resource('capstonetypes', CapstoneTypeController::class);
 
     Route::resource('milestones', MilestoneController::class);
 
     Route::resource('milestone-lists', MilestoneListController::class);
-
-    Route::resource('groups', GroupController::class);
 
     Route::put('group-milestone/{groupmilestone}', [GroupMilestoneController::class, 'update'])->name('group-milestone.update');
 
@@ -67,6 +81,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('group-panel/{group}', [GroupPanelController::class, 'store'])->name('group-panel.store');
     Route::delete('group-panel/{group}/{panel}', [GroupPanelController::class, 'destroy'])->name('group-panel.destroy');
 
-    Route::put('students/{student}/status', [StudentController::class, 'status'])->name('students.status'); 
-    Route::resource('students', StudentController::class);
+    Route::post('minutetemplates/{template}/content', [MinuteTemplateController::class, 'addContent'])->name('minutetemplates.add.content');
+    Route::delete('minutetemplates/{content}/content', [MinuteTemplateController::class, 'removeContent'])->name('minutetemplates.remove.content');
+    Route::resource('minutetemplates', MinuteTemplateController::class);
+    
 });

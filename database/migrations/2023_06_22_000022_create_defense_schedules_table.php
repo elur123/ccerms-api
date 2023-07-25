@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('section_groups', function (Blueprint $table) {
+        Schema::create('defense_schedules', function (Blueprint $table) {
             $table->id();
+            $table->string('venue');
+            $table->time('start_at');
+            $table->time('end_at');
+            $table->date('schedule_at');
+            $table->timestamps();
         });
     }
 
@@ -21,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('section_groups');
+        Schema::dropIfExists('defense_schedules');
     }
 };

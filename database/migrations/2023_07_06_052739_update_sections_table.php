@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sections', function (Blueprint $table) {
+            $table->foreignId('section_type_id')->constrained('section_types');
             $table->foreignUuid('user_id')->constrained('users');
         });
     }

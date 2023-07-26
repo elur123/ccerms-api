@@ -27,7 +27,8 @@ class DefenseScheduleResource extends JsonResource
             'type' => $this->whenLoaded('type'),
             'status' => $this->whenLoaded('status'),
             'group' => new GroupResource($this->whenLoaded('group')),
-            'panels' => $this->whenLoaded('panels')
+            'panels' => $this->whenLoaded('panels'),
+            'minute' => $this->whenLoaded('minute')
         ];
     }
 }

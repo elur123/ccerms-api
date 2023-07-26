@@ -54,4 +54,9 @@ class DefenseSchedule extends Model
     {
         return $this->hasMany(DefensePanel::class, 'defense_schedule_id');
     }
+
+    public function minute()
+    {
+        return $this->hasOne(Minute::class, 'schedule_id')->latestOfMany();
+    }
 }

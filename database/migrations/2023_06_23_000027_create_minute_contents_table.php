@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('minute_id')->constrained('minutes');
             $table->string('label');
-            $table->tinyText('value');
+            $table->tinyText('value')->nullable();
         });
     }
 

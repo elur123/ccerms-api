@@ -29,9 +29,9 @@ class MinuteController extends Controller
      */
     public function store(MinuteRequest $request)
     {
-        Minute::create($request->validated());
+        $minute = Minute::create($request->validated());
 
-        return $this->index();
+        return $this->show($minute);
     }
 
     /**
@@ -39,6 +39,8 @@ class MinuteController extends Controller
      */
     public function show(Minute $minute)
     {
+        $minute->load('contents');
+        
         return response()->json([
             'minute' => new MinuteResource($minute)
         ], 200);

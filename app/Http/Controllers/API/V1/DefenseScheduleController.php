@@ -16,7 +16,7 @@ class DefenseScheduleController extends Controller
     public function index()
     {
         $schedules = DefenseSchedule::query()
-        ->with('type', 'group.advisers', 'group.panels', 'status', 'panels')
+        ->with('type', 'group.advisers', 'group.panels', 'status', 'panels', 'minute.contents')
         ->get();
 
         return response()->json([
@@ -39,7 +39,7 @@ class DefenseScheduleController extends Controller
      */
     public function show(DefenseSchedule $defense)
     {
-        $defense->load('type.minuteTemplate.contents', 'group.members', 'group.advisers', 'group.panels', 'status', 'panels');
+        $defense->load('type.minuteTemplate.contents', 'group.members', 'group.advisers', 'group.panels', 'status', 'panels', 'minute.contents');
 
         return response()->json([
             'schedule' => new DefenseScheduleResource($defense)

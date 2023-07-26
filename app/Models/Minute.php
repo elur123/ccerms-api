@@ -22,7 +22,17 @@ class Minute extends Model
     protected static function booted(): void
     {
         static::creating(function (Minute $minute) {
-           $minute->prepared_by = request()->user()->id;
+            $minute->prepared_by = request()->user()->id;
+        });
+
+        // Create minute contents
+        static::created(function (Minute $minute) {
+            foreach (json_decode(request()->contents) as $key => $value) {
+                $minute->contents()->create([
+                    'label' => $value->label,
+                    'value' => $value->value
+                ]);
+            }
         });
     }
 
@@ -34,7 +44,7 @@ class Minute extends Model
 
     public function schedule()
     {
-        return $this->belongsTo(Schedule::class, 'schedule_id');
+        return $this->belongsTo(DefenseSchedule::class, 'schedule_id');
     }
 
     public function userPrepared()

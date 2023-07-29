@@ -23,6 +23,7 @@ use App\Http\Controllers\API\V1\DefensePanelController;
 use App\Http\Controllers\API\V1\DefenseTypeController;
 use App\Http\Controllers\API\V1\MinuteTemplateController;
 use App\Http\Controllers\API\V1\MinuteController;
+use App\Http\Controllers\API\V1\ResearchArchiveController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -87,4 +88,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('minutetemplates', MinuteTemplateController::class);
     
     Route::resource('minutes', MinuteController::class);
+
+    Route::resource('research-archives', ResearchArchiveController::class);
 });

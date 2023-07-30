@@ -12,6 +12,8 @@ class ResearchArchive extends Model
     protected $fillable = [
         'group_name',
         'title',
+        'research_file',
+        'file_url',
         'keywords',
         'section_year_from',
         'section_year_to',
@@ -25,6 +27,7 @@ class ResearchArchive extends Model
     protected static function booted(): void
     {
         static::created(function (ResearchArchive $archive) {
+            // Save archive members
             foreach (json_decode(request()->members) as $key => $value) {
                 $archive->members()->create([
                     'name' => $value->name,
@@ -46,5 +49,28 @@ class ResearchArchive extends Model
     public function members()
     {
         return $this->hasMany(ResearchArchiveMember::class, 'research_archive_id');
+    }
+
+    /**
+     * 
+     * Scope functions
+     */
+    public function scopeFilter($query, $keyword)
+    {
+        if (! $keyword) {
+            return $query;
+        }
+
+        $attributes = [
+            'research_archives.group_name',
+            'research_archives.title',
+            'research_archives.keywords'
+        ];
+
+        $attributes = implode(', ', $attributes);
+
+        return $query->whereRaw("
+            (CONCAT_WS(' ', {$attributes}) like '%{$keyword}%')
+        ");
     }
 }

@@ -18,6 +18,8 @@ class ResearchArchiveResource extends JsonResource
             'id' => $this->id,
             'group_name' => $this->group_name,
             'title' => $this->title, 
+            'file' => $this->research_file,
+            'file_url' => config('app.url') .'/'. str_replace('public', 'storage', $this->file_url),
             'keywords' => $this->keywords,
             'section_year_from' => $this->section_year_from,
             'section_year_to' => $this->section_year_to,

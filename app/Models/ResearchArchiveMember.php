@@ -21,7 +21,7 @@ class ResearchArchiveMember extends Model
      * Relationship functions
      */
 
-    public function researchArchives()
+    public function researchArchive()
     {
         return $this->belongsTo(ResearchArchive::class, 'research_archive_id');
     }

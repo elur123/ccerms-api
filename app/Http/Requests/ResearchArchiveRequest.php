@@ -37,6 +37,7 @@ class ResearchArchiveRequest extends FormRequest
         return [
             'group_name' => ['required', Rule::unique('research_archives')],
             'title' => ['required'],
+            'file' => ['required', 'mimes:pdf'],
             'keywords' => ['required'],
             'section_year_from' => ['required'],
             'section_year_to' => ['required'],
@@ -48,8 +49,9 @@ class ResearchArchiveRequest extends FormRequest
     public function putValidation(): array
     {
         return [
-            'group_name' => ['required', Rule::unique('research_archives')->research_archive->id],
+            'group_name' => ['required', Rule::unique('research_archives')->ignore($this->research_archive->id)],
             'title' => ['required'],
+            'file' => ['nullable', 'mimes:pdf'],
             'keywords' => ['required'],
             'section_year_from' => ['required'],
             'section_year_to' => ['required'],

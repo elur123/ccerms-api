@@ -19,6 +19,8 @@ return new class extends Migration
             $table->year('section_year_from');
             $table->year('section_year_to');
             $table->string('adviser');
+            $table->string('research_file')->nullable();
+            $table->tinyText('file_url')->nullable();
             $table->foreignId('course_id')->constrained('courses');
             $table->timestamps();
         });

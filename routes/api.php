@@ -89,5 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::resource('minutes', MinuteController::class);
 
+    Route::post('research-archives/{research_archive}/member', [ResearchArchiveController::class, 'addMember'])->name('research-archives.member.store');
+    Route::delete('research-archives/{member}/member', [ResearchArchiveController::class, 'removeMember'])->name('research-archives.member.destroy');
     Route::resource('research-archives', ResearchArchiveController::class);
 });

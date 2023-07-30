@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ResearchArchiveRequest;
 use App\Http\Resources\ResearchArchiveResource;
+use App\Services\SaveResearchArchiveFile;
 
 use App\Models\ResearchArchive;
+use App\Models\ResearchArchiveMember;
 class ResearchArchiveController extends Controller
 {
     /**
@@ -17,6 +19,7 @@ class ResearchArchiveController extends Controller
     {
         $archives = ResearchArchive::query()
         ->with('course', 'members')
+        ->filter(request()->s)
         ->paginate();
 
         return ResearchArchiveResource::collection($archives);
@@ -25,9 +28,11 @@ class ResearchArchiveController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ResearchArchiveRequest $request)
+    public function store(ResearchArchiveRequest $request, SaveResearchArchiveFile $service)
     {
-        ResearchArchive::create($request->validated());
+        $archive = ResearchArchive::create($request->validated());
+
+        $service->execute($request, $archive);
 
         return $this->index();
     }
@@ -37,18 +42,21 @@ class ResearchArchiveController extends Controller
      */
     public function show(ResearchArchive $research_archive)
     {
-        $research_archive->load('couse', 'members');
+        $research_archive->load('course', 'members');
+
         return response()->json([
-            'archives' => ResearchArchiveResource::make($research_archive)
+            'archive' => ResearchArchiveResource::make($research_archive)
         ], 200); 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ResearchArchiveRequest $request, ResearchArchive $research_archive)
+    public function update(ResearchArchiveRequest $request, ResearchArchive $research_archive, SaveResearchArchiveFile $service)
     {
         $research_archive->update($request->validated());
+
+        $service->execute($request, $research_archive);
 
         return $this->index();
     }
@@ -59,5 +67,22 @@ class ResearchArchiveController extends Controller
     public function destroy(ResearchArchive $research_archive)
     {
         //
+    }
+
+    public function addMember(Request $request, ResearchArchive $research_archive)
+    {
+        $research_archive->members()->create([
+            'name' => $request->name
+        ]);
+
+        return $this->show($research_archive);
+    }
+
+    public function removeMember(ResearchArchiveMember $member)
+    {
+        $archive = $member->researchArchive;
+        $member->delete();
+
+        return $this->show($archive);
     }
 }

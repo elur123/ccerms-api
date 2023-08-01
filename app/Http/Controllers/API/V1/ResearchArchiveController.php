@@ -17,8 +17,24 @@ class ResearchArchiveController extends Controller
      */
     public function index()
     {
-        $archives = ResearchArchive::query()
+        $archives = ResearchArchive::select('research_archives.*')
         ->with('course', 'members')
+        ->join('courses', 'research_archives.course_id', 'courses.id')
+        ->when(request()->orderBy && request()->orderFunction, function ($query) {
+            if (request()->orderBy == 'course') 
+            {
+                $query->orderBy('courses.label', request()->orderFunction);
+            }
+            else if(request()->orderBy == 'section_year')
+            {
+                $query->orderBy('research_archives.section_year_to', request()->orderFunction);
+            }
+            else
+            {
+                $query->orderBy(request()->orderBy, request()->orderFunction);
+            }
+            
+        })
         ->filter(request()->s)
         ->paginate();
 

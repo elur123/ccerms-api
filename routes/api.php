@@ -36,6 +36,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
 Route::prefix('public')->name('public.')->group(function () {
 
     Route::get('courses', [CourseController::class, 'index'])->name('courses');
+    Route::get('research-archives', [ResearchArchiveController::class, 'index'])->name('research-archives');
 });
 
 Route::middleware('auth:sanctum')->group(function () {

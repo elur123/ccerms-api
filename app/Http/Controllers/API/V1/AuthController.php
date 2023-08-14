@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use App\Enums\StatusEnum;
+use App\Enums\RoleEnum;
 
 use App\Models\User;
 class AuthController extends Controller
@@ -29,6 +30,10 @@ class AuthController extends Controller
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
+        }
+
+        if ($user->role_id === RoleEnum::STUDENT->value) {
+           $user->load('studentDetails.groupMember');
         }
 
         if ($user->status_id !== StatusEnum::APPROVED->value) {

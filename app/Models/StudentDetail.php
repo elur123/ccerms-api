@@ -28,4 +28,9 @@ class StudentDetail extends Model
     {
         return $this->belongsTo(Course::class, 'course_id');
     }
+
+    public function groupMember()
+    {
+        return $this->hasOne(GroupMember::class, 'user_id', 'user_id');
+    }
 }

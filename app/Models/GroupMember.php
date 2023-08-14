@@ -15,4 +15,14 @@ class GroupMember extends Model
     ];
 
     public $timestamps = false;
+
+    /**
+     * 
+     * Relationship functions
+     */
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id');
+    }
 }

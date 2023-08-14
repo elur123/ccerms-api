@@ -12,14 +12,22 @@ class GroupObserver
     {
         $course = $group->course;
 
+        $currentOneMilestone = $course->milestoneOne
+        ->milestoneList()
+        ->firstWhere('order_by', 1);
+
+        $currentTwoMilestone = $course->milestoneOne
+        ->milestoneList()
+        ->firstWhere('order_by', 1);
+
         $group->groupMilestone()->create([
             'milestone_id' => $course->milestone_one,
-            'milestone_list_id' => null
+            'milestone_list_id' => $currentOneMilestone->id
         ]);
 
         $group->groupMilestone()->create([
             'milestone_id' => $course->milestone_two,
-            'milestone_list_id' => null
+            'milestone_list_id' => $currentTwoMilestone->id
         ]);
     }
 

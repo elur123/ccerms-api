@@ -24,6 +24,7 @@ class BoardResource extends JsonResource
             'personnel' => UserResource::make($this->whenLoaded('personnel')),
             'status' => $this->whenLoaded('status'),
             'progress' => $this->progress,
+            'type' => $this->type
         ];
     }
 }

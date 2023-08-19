@@ -11,22 +11,25 @@ class GroupAvailablePersonnelMembers {
     public function execute(Group $group)
     {
         return [
-            'members' => $this->members(),
+            'members' => $this->members($group),
             'advisers' => $this->advisers($group),
             'panels' => $this->panels($group)
         ];
     }
 
-    public function members()
+    public function members($group)
     {
         $ids = GroupMember::query()
         ->get()
         ->pluck('user_id');
         
         return  User::query()
+        ->select('users.*', 'student_details.user_id', 'student_details.course_id')
+        ->leftJoin('student_details', 'student_details.user_id', 'users.id')
         ->approved()
         ->student()
-        ->whereNotIn('id', $ids)
+        ->whereNotIn('users.id', $ids)
+        ->where('student_details.course_id', $group->course_id)
         ->get()
         ->map(fn($member) => [
             'id' => $member->id,

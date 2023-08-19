@@ -56,6 +56,9 @@ class MilestoneListRequest extends FormRequest
                     $fail("The order by is invalid.");
                 }
             }],
+            'adviser_first' => ['boolean'],
+            'has_adviser' => ['boolean'],
+            'has_panel' => ['boolean'],
             'milestone_id' => ['required']
         ];
     }
@@ -80,6 +83,9 @@ class MilestoneListRequest extends FormRequest
                     $fail("The order by is invalid.");
                 }
             }],
+            'adviser_first' => ['boolean'],
+            'has_adviser' => ['boolean'],
+            'has_panel' => ['boolean'],
             'milestone_id' => ['required']
         ];
     }

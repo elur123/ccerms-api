@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\GroupRequest;
 use App\Http\Resources\GroupResource;
 use App\Services\GroupAvailablePersonnelMembers;
+use App\Services\ValidateCourseMilestone;
 
 use App\Models\Group;
 class GroupController extends Controller
@@ -28,8 +29,16 @@ class GroupController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(GroupRequest $request)
+    public function store(GroupRequest $request, ValidateCourseMilestone $validateCourse)
     {
+        $validate = $validateCourse->execute($request->course_id);
+
+        if (!$validate) {
+            return response()->json([
+                'message' => 'Setup first milestone list!'
+            ], 422);
+        }
+
         Group::create($request->validated());
 
         return $this->index();

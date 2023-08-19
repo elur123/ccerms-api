@@ -24,6 +24,7 @@ use App\Http\Controllers\API\V1\DefenseTypeController;
 use App\Http\Controllers\API\V1\MinuteTemplateController;
 use App\Http\Controllers\API\V1\MinuteController;
 use App\Http\Controllers\API\V1\ResearchArchiveController;
+use App\Http\Controllers\API\V1\BoardController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -93,4 +94,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('research-archives/{research_archive}/member', [ResearchArchiveController::class, 'addMember'])->name('research-archives.member.store');
     Route::delete('research-archives/{member}/member', [ResearchArchiveController::class, 'removeMember'])->name('research-archives.member.destroy');
     Route::resource('research-archives', ResearchArchiveController::class);
+
+    Route::get('boards/{group_id}/{step_id}', [BoardController::class, 'show'])->name('boards.show');
+    Route::get('boards/{board}', [BoardController::class, 'storeSubmission'])->name('boards.submission.store');
 });

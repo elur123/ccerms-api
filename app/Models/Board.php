@@ -15,6 +15,7 @@ class Board extends Model
         'personnel_id',
         'status_id',
         'progress',
+        'type'
     ];
 
     /**
@@ -34,7 +35,7 @@ class Board extends Model
 
     public function personnel()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'personnel_id');
     }
 
     public function submissions()

@@ -17,6 +17,9 @@ return new class extends Migration
             $table->tinyText('description');
             $table->integer('percent');
             $table->integer('order_by');
+            $table->boolean('adviser_first')->default(false);
+            $table->boolean('has_adviser')->default(false);
+            $table->boolean('has_panel')->default(false);
             $table->timestamps();
         });
     }

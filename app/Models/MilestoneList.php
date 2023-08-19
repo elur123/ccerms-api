@@ -15,6 +15,9 @@ class MilestoneList extends Model
         'percent',
         'milestone_id',
         'order_by',
+        'adviser_first',
+        'has_adviser',
+        'has_panel',
     ];
 
     /**

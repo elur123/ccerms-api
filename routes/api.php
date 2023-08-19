@@ -96,5 +96,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('research-archives', ResearchArchiveController::class);
 
     Route::get('boards/{group_id}/{step_id}', [BoardController::class, 'show'])->name('boards.show');
-    Route::get('boards/{board}', [BoardController::class, 'storeSubmission'])->name('boards.submission.store');
+    Route::post('boards/{board}', [BoardController::class, 'storeSubmission'])->name('boards.submission.store');
 });

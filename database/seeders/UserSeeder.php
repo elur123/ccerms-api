@@ -16,12 +16,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Admin dev',
-            'email' => 'dev@gmail.com',
-            'password' => Hash::make('developer'),
-            'role_id' => RoleEnum::ADMIN->value,
-            'status_id' => StatusEnum::APPROVED->value
-        ]);
+        User::withoutEvents(function () {
+            User::create([
+                'name' => 'Admin dev',
+                'email' => 'dev@gmail.com',
+                'password' => Hash::make('developer'),
+                'role_id' => RoleEnum::ADMIN->value,
+                'status_id' => StatusEnum::APPROVED->value
+            ]);
+        });
     }
 }

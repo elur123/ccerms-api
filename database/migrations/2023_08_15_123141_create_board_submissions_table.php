@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('status_id')->constrained('statuses');
             $table->integer('revision')->default(1);
             $table->tinyText('details');
-            $table->string('file');
-            $table->tinyText('file_url');
+            $table->string('file')->nullable();
+            $table->tinyText('file_url')->nullable();
             $table->double('progress', 3, 2)->default(0);
             $table->timestamps();
         });

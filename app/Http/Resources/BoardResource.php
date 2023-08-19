@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\GroupResource;
 use App\Http\Resources\MilestoneListResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\BoardSubmissionResource;
 
 class BoardResource extends JsonResource
 {
@@ -22,6 +23,7 @@ class BoardResource extends JsonResource
             'group' => GroupResource::make($this->whenLoaded('group')),
             'step' => MilestoneListResource::make($this->whenLoaded('step')),
             'personnel' => UserResource::make($this->whenLoaded('personnel')),
+            'submissions' => BoardSubmissionResource::collection($this->whenLoaded('submissions')),
             'status' => $this->whenLoaded('status'),
             'progress' => $this->progress,
             'type' => $this->type

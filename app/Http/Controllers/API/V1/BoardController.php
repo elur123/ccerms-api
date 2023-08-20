@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Services\ValidateBoardSubmission;
 use App\Services\StoreBoardSubmissionFile;
 use App\Http\Resources\BoardResource;
 use App\Enums\StatusEnum;
@@ -25,12 +26,22 @@ class BoardController extends Controller
         ], 200);
     }
 
-    public function storeSubmission(Request $request, Board $board, StoreBoardSubmissionFile $fileSubmission)
+    public function storeSubmission(
+        Request $request, 
+        Board $board, 
+        ValidateBoardSubmission $validateSubmission,
+        StoreBoardSubmissionFile $fileSubmission)
     {
         $request->validate([
             'file' => 'required',
             'comment' => 'required'
         ]);
+
+        if ($validateSubmission->execute($board)) {
+            return response()->json([
+                'message' => 'Already submitted!'
+            ], 422);
+        }
 
         $board->load('personnel', 'submissions.status', 'submissions.student');
         $submission = $board->submissions()->create([

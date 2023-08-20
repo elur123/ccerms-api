@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\GroupAvailablePersonnelMembers;
+use App\Services\StoreGroupBoards;
 use App\Http\Resources\GroupResource;
 use App\Http\Resources\UserResource;
 
@@ -12,7 +13,7 @@ use App\Models\Group;
 use App\Models\GroupPanel;
 class GroupPanelController extends Controller
 {
-    public function store(Request $request, Group $group, GroupAvailablePersonnelMembers $gapm)
+    public function store(Request $request, Group $group, GroupAvailablePersonnelMembers $gapm, StoreGroupBoards $boards)
     {
         $request->validate([
             'panel_id' => 'required'
@@ -22,6 +23,8 @@ class GroupPanelController extends Controller
             'group_id' => $group->id,
             'user_id' => $request->panel_id
         ]); 
+
+        $boards->execute($group, $request->panel_id, 'panel');
 
         return response()->json([
             'panels' => UserResource::collection($group->panels),

@@ -28,6 +28,8 @@ class BoardSubmissionResource extends JsonResource
             'file' => $this->file,
             'file_url' => $this->file_url,
             'progress' => $this->progress,
+            'created_at' => $this->created_at->format('M d, Y'),
+            'updated_at' => $this->updated_at->format('M d, Y')
         ];
     }
 }

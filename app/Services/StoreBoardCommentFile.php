@@ -3,19 +3,19 @@
 namespace App\Services;
 use Illuminate\Http\Request;
 
-use App\Models\BoardSubmission;
-class StoreBoardSubmissionFile {
+use App\Models\BoardComment;
+class StoreBoardCommentFile {
 
-    public function execute(Request $request, BoardSubmission $submission)
+    public function execute(Request $request, BoardComment $comment)
     {
 
         // Save research file
         if (isset($request->file)) {
             $file = $request->file('file');
             $fileName = $file->getClientOriginalName();
-            $filePath = $file->storeAs('public/files/boards/'.$submission->id, $fileName);
+            $filePath = $file->storeAs('public/files/boards/'.$comment->submission_id, $fileName);
 
-            $submission->update([
+            $comment->update([
                 'file' => $fileName,
                 'file_url' => $filePath
             ]);

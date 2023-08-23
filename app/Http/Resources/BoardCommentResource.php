@@ -18,7 +18,7 @@ class BoardCommentResource extends JsonResource
         return [
             'id' => $this->id,
             'submission' => BoardSubmissionResource::make($this->whenLoaded('submission')),
-            'commentedBy' => UserResource::make($this->whenLoaded('commentedBy')),
+            'commentedBy' => UserResource::make($this->whenLoaded('user')),
             'comment' => $this->comment,
             'file' => $this->file,
             'file_url' => $this->file_url

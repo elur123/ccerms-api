@@ -27,7 +27,7 @@ class BoardComment extends Model
         return $this->belongsTo(BoardSubmission::class, 'submission_id');
     }
 
-    public function commentedBy()
+    public function user()
     {
         return $this->belongsTo(User::class, 'comment_by');
     }

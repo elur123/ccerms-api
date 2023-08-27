@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Services\GetGroupBoards;
 use App\Services\ValidateBoardSubmission;
 use App\Services\StoreBoardSubmissionFile;
 use App\Services\StoreBoardCommentFile;
@@ -16,13 +17,9 @@ use App\Models\BoardSubmission;
 class BoardController extends Controller
 {
     
-    public function show($group_id, $step_id)
+    public function show($group_id, $step_id, GetGroupBoards $groupBoards)
     {
-        $boards = Board::query()
-        ->with('personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user')
-        ->where('group_id', $group_id)
-        ->where('step_id', $step_id)
-        ->get();
+        $boards = $groupBoards->execute($group_id, $step_id);
 
         return response()->json([
             'boards' => BoardResource::collection($boards)

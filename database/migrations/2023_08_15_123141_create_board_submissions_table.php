@@ -20,7 +20,7 @@ return new class extends Migration
             $table->tinyText('details');
             $table->string('file')->nullable();
             $table->tinyText('file_url')->nullable();
-            $table->double('progress', 3, 2)->default(0);
+            $table->double('progress', 5, 2)->default(0);
             $table->timestamps();
         });
     }

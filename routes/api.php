@@ -98,4 +98,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('boards/{group_id}/{step_id}', [BoardController::class, 'show'])->name('boards.show');
     Route::post('boards/{board}', [BoardController::class, 'storeSubmission'])->name('boards.submission.store');
     Route::post('boards/{submission}/comment', [BoardController::class, 'storeSubmissionComment'])->name('boards.submission.comment.store');
+    Route::post('boards/{submission}/status', [BoardController::class, 'updateSubmissionStatus'])->name('boards.submission.status.update');
 });

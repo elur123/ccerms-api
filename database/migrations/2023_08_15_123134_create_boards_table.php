@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('step_id')->constrained('milestone_lists');
             $table->foreignUuid('personnel_id')->constrained('users');
             $table->foreignId('status_id')->constrained('statuses');
-            $table->double('progress', 3, 2)->default(0);
+            $table->double('progress', 5, 2)->default(0);
             $table->string('type');
             $table->timestamps();
         });

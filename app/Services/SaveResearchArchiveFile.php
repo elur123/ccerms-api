@@ -10,7 +10,7 @@ class SaveResearchArchiveFile {
     {
 
         // Save research file
-        if (isset($request->file)) {
+        if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fileName = $file->getClientOriginalName();
             $filePath = $file->storeAs('public/files/archives', $fileName);

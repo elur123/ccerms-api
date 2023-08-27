@@ -8,6 +8,7 @@ use App\Services\GetGroupBoards;
 use App\Services\ValidateBoardSubmission;
 use App\Services\StoreBoardSubmissionFile;
 use App\Services\StoreBoardCommentFile;
+use App\Services\UpdateBoardStatus;
 use App\Http\Resources\BoardResource;
 use App\Http\Resources\BoardSubmissionResource;
 use App\Enums\StatusEnum;
@@ -43,16 +44,23 @@ class BoardController extends Controller
             ], 422);
         }
 
-        $board->load('personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user');
+        $revision = $board->submissions()->count();
+
         $submission = $board->submissions()->create([
             'student_id' => $request->student_id,
             'status_id' => StatusEnum::PENDING->value,
             'details' => $request->comment,
+            'revision' => $revision + 1
         ]);
 
         $fileSubmission->execute($request, $submission);
 
-        return $this->show($board->group_id, $board->step_id);
+        $board = Board::find($board->id);
+        $board->load('personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user');
+
+        return response()->json([
+            'board' => BoardResource::make($board)
+        ], 200);
     }
 
     public function storeSubmissionComment(
@@ -76,6 +84,34 @@ class BoardController extends Controller
 
         return response()->json([
             'submission' => BoardSubmissionResource::make($submission)
+        ], 200);
+    }
+
+    public function updateSubmissionStatus(
+        Request $request,  
+        BoardSubmission $submission,
+        UpdateBoardStatus $boardStatus
+    )
+    {
+        $request->validate([
+            'status_id' => 'required',
+            'progress' => 'required'
+        ]);
+
+        $submission->update([
+            'status_id' => $request->status_id,
+            'progress' => doubleval($request->progress)
+        ]);
+
+        $boardStatus->execute($submission->board_id, $request->progress);
+
+        $submission->load('status', 'student', 'comments.user');
+
+        $board = Board::find($submission->board_id);
+        $board->load('personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user');
+
+        return response()->json([
+            'board' => BoardResource::make($board)
         ], 200);
     }
 }

@@ -40,6 +40,6 @@ class Board extends Model
 
     public function submissions()
     {
-        return $this->hasMany(BoardSubmission::class, 'board_id');
+        return $this->hasMany(BoardSubmission::class, 'board_id')->latest();
     }
 }

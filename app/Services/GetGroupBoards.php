@@ -23,8 +23,10 @@ class GetGroupBoards {
         ->with('personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user')
         ->where('group_id', $group_id)
         ->where('step_id', $step_id)
-        ->when($milestoneList->adviser_first && !$adviserDone, function($query) {
-            $query->where('type', 'adviser');
+        ->when($milestoneList->adviser_first, function($query) use($adviserDone) {
+            if (!$adviserDone) {
+                $query->where('type', 'adviser');
+            }
         })
         ->get();
     }

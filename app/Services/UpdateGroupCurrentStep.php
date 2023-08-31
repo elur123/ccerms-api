@@ -34,7 +34,7 @@ class UpdateGroupCurrentStep {
             if ($findNext != null) 
             {
                 $group->groupMilestone()
-                ->where('milestone_id', $milestone_id)
+                ->where('milestone_id', $milestoneId)
                 ->update([
                     'milestone_list_id' => $findNext->id
                 ]);

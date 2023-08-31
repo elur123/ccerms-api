@@ -99,17 +99,17 @@ class BoardController extends Controller
             'progress' => 'required'
         ]);
 
-        // $submission->update([
-        //     'status_id' => $request->progress < 100 ? StatusEnum::DECLINED->value : StatusEnum::APPROVED,
-        //     'progress' => doubleval($request->progress)
-        // ]);
+        $submission->update([
+            'status_id' => $request->progress < 100 ? StatusEnum::DECLINED->value : StatusEnum::APPROVED,
+            'progress' => doubleval($request->progress)
+        ]);
 
-        // $boardStatus->execute($submission->board_id, $request->progress);
+        $boardStatus->execute($submission->board_id, $request->progress);
 
         $board = Board::find($submission->board_id);
         $board->load('personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user');
 
-        return $groupStep->execute($board->group_id, $board->step_id);
+        $groupStep->execute($board->group_id, $board->step_id);
 
         return response()->json([
             'board' => BoardResource::make($board)

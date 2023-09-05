@@ -25,6 +25,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $user = User::where('email', $request->email)->first();
+        $statusProhibit = [StatusEnum::APPROVED->value, StatusEnum::ONGOING->value, StatusEnum::DONE->value];
  
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
@@ -36,7 +37,7 @@ class AuthController extends Controller
            $user->load('studentDetails.groupMember');
         }
 
-        if ($user->status_id !== StatusEnum::APPROVED->value) {
+        if (!in_array($user->status_id, $statusProhibit)) {
             throw ValidationException::withMessages([
                 'status' => ['Wait for the admin to verify your account.'],
             ]);

@@ -22,6 +22,8 @@ class StatusSeeder extends Seeder
             ['label' => 'Major'],
             ['label' => 'Revised'],
             ['label' => 'Resched'],
+            ['label' => 'Ongoing'],
+            ['label' => 'Done'],
         ], ['label']);
     }
 }

@@ -20,8 +20,10 @@ class GroupResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'key' => $this->key,
             'group_name' => $this->group_name,
             'title' => $this->title,
+            'isDone' => $this->is_done, 
             'course_id' => $this->course_id,
             'capstone_type_id' => $this->capstone_type_id,
             'course' => new CourseResource($this->whenLoaded('course')),

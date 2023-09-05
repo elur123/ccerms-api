@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('key');
             $table->string('group_name');
             $table->tinyText('title');
+            $table->boolean('is_done')->default(false);
             $table->timestamps();
         });
     }

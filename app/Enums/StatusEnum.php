@@ -12,4 +12,6 @@ enum StatusEnum: int
     case MAJOR = 6;
     case REVISED = 7;
     case RESCHED = 8;
+    case ONGOING = 9;
+    case DONE = 10;
 }

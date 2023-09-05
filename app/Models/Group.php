@@ -15,6 +15,7 @@ class Group extends Model
         'title',
         'course_id',
         'capstone_type_id',
+        'is_done'
     ];
 
 

@@ -40,14 +40,6 @@ Route::prefix('public')->name('public.')->group(function () {
     Route::get('research-archives', [ResearchArchiveController::class, 'index'])->name('research-archives');
 });
 
-Route::get('/pusher', function() {
-
-    $message = ['message' => 'success', 'status' => 200];
-    pushMessage('testChannel', 'testEvent', $message);
-
-    return ['message' => true];
-});
-
 Route::middleware('auth:sanctum')->group(function () {
     
     Route::get('users/teachers', [UserController::class, 'teachers'])->name('users.teachers'); 

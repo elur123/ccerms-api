@@ -13,7 +13,7 @@ class CapstoneTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::upsert([
+        CapstoneType::upsert([
             ['label' => 'Capstone One'],
             ['label' => 'Capstone Two'],
         ], ['label']);

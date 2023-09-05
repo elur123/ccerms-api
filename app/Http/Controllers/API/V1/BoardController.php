@@ -111,6 +111,9 @@ class BoardController extends Controller
 
         $groupStep->execute($board->group_id, $board->step_id);
 
+        $message = ['message' => 'success', 'status' => 200];
+        pushMessage($board->group->key, 'boardUpdate', $message);
+
         return response()->json([
             'board' => BoardResource::make($board)
         ], 200);

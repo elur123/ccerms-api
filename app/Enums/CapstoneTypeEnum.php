@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum BoardType: int
+enum CapstoneTypeEnum: int
 {
     case ONE = 1;
     case TWO = 2;

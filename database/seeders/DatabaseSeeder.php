@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             SectionTypeSeeder::class,
+            CapstoneTypeSeeder::class,
         ]);
     }
 }

@@ -40,7 +40,7 @@ class GroupRequest extends FormRequest
             'group_name' =>  ['required', 'string', 'max:80', Rule::unique('groups')],
             'title' => ['required', 'string', 'max:1040', Rule::unique('groups')],
             'course_id' => ['required'],
-            'capstone_type_id' => ['required']
+            // 'capstone_type_id' => ['required']
         ];
     }
 
@@ -50,7 +50,7 @@ class GroupRequest extends FormRequest
             'group_name' =>  ['required', 'string', 'max:80', Rule::unique('groups')->ignore($this->group->id)],
             'title' => ['required', 'string', 'max:1040', Rule::unique('groups')->ignore($this->group->id)],
             'course_id' => ['required'],
-            'capstone_type_id' => ['required']
+            // 'capstone_type_id' => ['required']
         ];
     }
 }

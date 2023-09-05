@@ -2,12 +2,23 @@
 
 namespace App\Observers;
 
+use App\Enums\CapstoneTypeEnum;
 use App\Models\Group;
 class GroupObserver
 {
     /**
      * Handle the Group "created" event.
      */
+    public function creating(Group $group): void
+    {
+        $group->key = generateGroupKey();
+        $group->capstone_type_id = CapstoneTypeEnum::ONE->value;
+    }
+    
+    /**
+     * Handle the Group "created" event.
+     */
+
     public function created(Group $group): void
     {
         $course = $group->course;

@@ -12,13 +12,13 @@ class StoreGroupBoards {
         $milestones = $group->groupMilestone;
 
         foreach ($milestones as $key => $value) {
-            $steps = MilestoneList::where('milestone_id', $value->id)
+            $steps = MilestoneList::where('milestone_id', $value->milestone_id)
             ->when($type, function($query) use($type) {
                 if ($type == 'adviser') {
-                    $query->where('has_adviser', true);
+                    $query->where('has_adviser', 1);
                 }
                 else{
-                    $query->where('has_panel', true);
+                    $query->where('has_panel', 1);
                 }
             })
             ->get();

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('group_milestones', function (Blueprint $table) {
             $table->id();
+            $table->double('progress', 5, 2)->default(0);
             $table->timestamps();
         });
     }

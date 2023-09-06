@@ -10,6 +10,7 @@ class GroupMilestone extends Model
     use HasFactory;
 
     protected $fillable = [
+        'progress',
         'group_id',
         'milestone_id',
         'milestone_list_id',

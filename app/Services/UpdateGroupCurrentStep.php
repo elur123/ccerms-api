@@ -10,6 +10,7 @@ class UpdateGroupCurrentStep {
     public function execute($group_id, $step_id)
     {
         $group = Group::find($group_id);
+        $group->loadCount('groupMilestone');
 
         $boardCount = $group->boards()
         ->where('step_id', $step_id)
@@ -19,14 +20,26 @@ class UpdateGroupCurrentStep {
         ->where('step_id', $step_id)
         ->where('progress', 100)
         ->count();
+
+        $list = MilestoneList::find($step_id);
+        $order = $list->order_by + 1;
+        $milestoneId = $list->milestone_id;
+
+        $milestoneBoards = $group->boards()
+        ->whereRelation('step', 'milestone_id', $milestoneId)
+        ->get();
+
+        $milestoneBoardCount = $milestoneBoards->count();
+        $milestoneBoardProgress = $milestoneBoards->sum('progress') / $milestoneBoardCount;
+        
+        $group->groupMilestone()
+        ->where('milestone_id', $milestoneId)
+        ->update([
+            'progress' => $milestoneBoardProgress
+        ]);
         
         if ($boardCount == $boardDone) 
         {
-            $list = MilestoneList::find($step_id);
-
-            $order = $list->order_by + 1;
-            $milestoneId = $list->milestone_id;
-
             $findNext = MilestoneList::where('milestone_id', $milestoneId)
             ->where('order_by', $order)
             ->first();
@@ -41,6 +54,11 @@ class UpdateGroupCurrentStep {
             }
             else
             {
+                if ($milestoneId == $group->group_milestone_count) 
+                {
+                    $group->is_done = true;
+                }
+
                 $group->capstone_type_id = 2;
                 $group->save();
             }

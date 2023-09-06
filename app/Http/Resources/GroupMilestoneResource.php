@@ -20,6 +20,7 @@ class GroupMilestoneResource extends JsonResource
         return [
             'id' => $this->id,
             'group_id' => $this->group_id,
+            'progress' => $this->progress,
             'milestone_id' => $this->milestone_id,
             'milestone_list_id' => $this->milestone_list_id,
             'group' => new GroupResource($this->whenLoaded('group')),

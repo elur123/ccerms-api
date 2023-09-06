@@ -96,7 +96,7 @@ class BoardController extends Controller
     )
     {
         $request->validate([
-            'progress' => 'required'
+            'progress' => ['required', 'numeric', 'max:100']
         ]);
 
         $submission->update([

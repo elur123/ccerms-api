@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\BoardSubmissionResource;
@@ -21,7 +22,8 @@ class BoardCommentResource extends JsonResource
             'commentedBy' => UserResource::make($this->whenLoaded('user')),
             'comment' => $this->comment,
             'file' => $this->file,
-            'file_url' => $this->file_url
+            'file_url' => $this->file_url,
+            'time' => Carbon::parse($this->created_at)->diffForHumans()
         ];
     }
 }

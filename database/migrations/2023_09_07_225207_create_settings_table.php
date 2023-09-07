@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('section_students', function (Blueprint $table) {
-            $table->foreignId('section_id')->constrained('sections');
-            $table->foreignId('status_id')->constrained('statuses');
-            $table->foreignUuid('user_id')->constrained('users');
+        Schema::create('settings', function (Blueprint $table) {
+            $table->id();
+            $table->integer('section_days_span')->nullable();
+            $table->string('mail_extension')->nullable();
         });
     }
 
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('section_students');
+        Schema::dropIfExists('settings');
     }
 };

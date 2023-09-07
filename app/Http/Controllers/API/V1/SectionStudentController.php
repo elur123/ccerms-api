@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\GetSectionAvailableStudents;
 use App\Http\Resources\UserResource;
+use App\Imports\StudentImport;
 
 use App\Models\SectionStudent;
 use App\Models\Section;
@@ -36,6 +37,15 @@ class SectionStudentController extends Controller
             'students' => UserResource::collection($section->students),
             'available' => $availableStudents->execute($params = ['year_end' => $section->year_end_at, 'semester' => $section->section_type_id])
         ], 200);
+    }
+
+    public function import(Request $request, Section $section)
+    {
+        $file = public_path('student_sample.xlsx');
+        $import = new StudentImport;
+        ($import)->import($file);
+
+        return response()->json(['count' => $import->data], 200);
     }
 
     /**

@@ -40,6 +40,8 @@ Route::prefix('public')->name('public.')->group(function () {
     Route::get('research-archives', [ResearchArchiveController::class, 'index'])->name('research-archives');
 });
 
+Route::get('student/import', [SectionStudentController::class, 'import'])->name('section-student.import');
+
 Route::middleware('auth:sanctum')->group(function () {
     
     Route::get('users/teachers', [UserController::class, 'teachers'])->name('users.teachers'); 
@@ -57,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('section-student', [SectionStudentController::class, 'availableStudents'])->name('section-student.available-students');
     Route::post('section-student/{section}', [SectionStudentController::class, 'store'])->name('section-student.store');
+    Route::post('section-student/import', [SectionStudentController::class, 'import'])->name('section-student.import');
     Route::delete('section-student/{section}/{student}', [SectionStudentController::class, 'destroy'])->name('section-student.destroy');
 
     Route::get('section-group', [SectionGroupController::class, 'availableGroups'])->name('section-student.available-groups');

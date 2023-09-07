@@ -10,6 +10,7 @@ class SectionStudent extends Model
     use HasFactory;
 
     protected $fillable = [
+        'status_id',
         'section_id',
         'user_id'
     ];

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->time('time_end_at');
             $table->year('year_start_at');
             $table->year('year_end_at');
+            $table->date('start_at');
+            $table->date('end_at');
             $table->timestamps();
         });
     }

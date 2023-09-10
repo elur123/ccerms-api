@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\UserResource;
@@ -24,9 +25,11 @@ class SectionResource extends JsonResource
             'time_end_at' => $this->time_end_at,
             'year_start_at' => $this->year_start_at,
             'year_end_at' => $this->year_end_at,
+            'start_at' => Carbon::parse($this->start_at)->format('M d, Y'),
+            'end_at' => Carbon::parse($this->end_at)->format('M d, Y'),
             'section_type_id' => $this->section_type_id,
             'user_id' => $this->user_id,
-            'type' => $this->whenLoaded('sectionType'),
+            'section_type' => $this->whenLoaded('sectionType'),
             'teacher' => new UserResource($this->whenLoaded('teacher')),
             'students' => UserResource::collection($this->whenLoaded('students')),
             'groups' => GroupResource::collection($this->whenLoaded('groups'))

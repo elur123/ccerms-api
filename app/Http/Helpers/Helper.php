@@ -2,6 +2,8 @@
 
 use Pusher\Pusher;
 use App\Models\Group;
+use App\Models\EmailVerification;
+
 function pushMessage($channel,$event,$message)
 {
   $options = array(
@@ -26,6 +28,17 @@ function generateGroupKey(): string
   do {
     $code = substr(str_shuffle(str_repeat($alphabet, 6)), 0, 6);
   } while(Group::where('key', $code)->exists());
+
+  return $code;
+}
+
+function generateEmailVerificationKey(): string
+{
+  $alphabet = 'BCDFGHJLMNPRSTVWXYZ2456789';
+
+  do {
+    $code = substr(str_shuffle(str_repeat($alphabet, 32)), 0, 32);
+  } while(EmailVerification::where('key', $code)->exists());
 
   return $code;
 }

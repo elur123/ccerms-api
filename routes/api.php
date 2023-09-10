@@ -25,6 +25,9 @@ use App\Http\Controllers\API\V1\MinuteTemplateController;
 use App\Http\Controllers\API\V1\MinuteController;
 use App\Http\Controllers\API\V1\ResearchArchiveController;
 use App\Http\Controllers\API\V1\BoardController;
+use App\Http\Controllers\API\V1\SettingController;
+use App\Http\Controllers\API\V1\TestController;
+use App\Http\Controllers\API\V1\AccountActivationController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -40,7 +43,14 @@ Route::prefix('public')->name('public.')->group(function () {
     Route::get('research-archives', [ResearchArchiveController::class, 'index'])->name('research-archives');
 });
 
-Route::get('student/import', [SectionStudentController::class, 'import'])->name('section-student.import');
+Route::prefix('activation')->name('activation.')->group(function () {
+
+    Route::get('activate/{email}/{key}', [AccountActivationController::class, 'activate'])->name('activate');
+});
+
+Route::prefix('test')->name('test.')->group(function () {
+    Route::get('send-activation', [TestController::class, 'sendAccountActivation'])->name('send-activation');
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     
@@ -59,7 +69,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('section-student', [SectionStudentController::class, 'availableStudents'])->name('section-student.available-students');
     Route::post('section-student/{section}', [SectionStudentController::class, 'store'])->name('section-student.store');
-    Route::post('section-student/import', [SectionStudentController::class, 'import'])->name('section-student.import');
+    Route::post('section-student/{section}/import', [SectionStudentController::class, 'import'])->name('section-student.import');
     Route::delete('section-student/{section}/{student}', [SectionStudentController::class, 'destroy'])->name('section-student.destroy');
 
     Route::get('section-group', [SectionGroupController::class, 'availableGroups'])->name('section-student.available-groups');
@@ -102,4 +112,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('boards/{board}', [BoardController::class, 'storeSubmission'])->name('boards.submission.store');
     Route::post('boards/{submission}/comment', [BoardController::class, 'storeSubmissionComment'])->name('boards.submission.comment.store');
     Route::post('boards/{submission}/status', [BoardController::class, 'updateSubmissionStatus'])->name('boards.submission.status.update');
+
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('settings/{setting}', [SettingController::class, 'update'])->name('settings.update');
 });

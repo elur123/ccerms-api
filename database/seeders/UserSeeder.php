@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         User::withoutEvents(function () {
             User::create([
                 'name' => 'Admin dev',
-                'email' => 'dev@gmail.com',
+                'email' => 'dev@umindanao.edu.ph',
                 'password' => Hash::make('developer'),
                 'role_id' => RoleEnum::ADMIN->value,
                 'status_id' => StatusEnum::APPROVED->value

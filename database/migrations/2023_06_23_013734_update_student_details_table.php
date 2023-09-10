@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('student_details', function (Blueprint $table) {
             $table->foreignUuid('user_id')->constrained('users');
-            $table->foreignId('course_id')->constrained('courses');
+            $table->foreignId('course_id')->nullable()->constrained('courses');
         });
     }
 

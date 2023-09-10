@@ -16,6 +16,8 @@ class Section extends Model
         'time_end_at',
         'year_start_at',
         'year_end_at',
+        'start_at',
+        'end_at',
         'section_type_id',
         'user_id'
     ]; 
@@ -37,7 +39,7 @@ class Section extends Model
 
     public function students()
     {
-        return $this->belongsToMany(User::class, 'section_students', 'section_id', 'user_id');
+        return $this->belongsToMany(User::class, 'section_students', 'section_id', 'user_id')->withPivot('status_id');
     }
 
     public function groups()

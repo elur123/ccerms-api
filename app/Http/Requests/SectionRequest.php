@@ -44,6 +44,8 @@ class SectionRequest extends FormRequest
             'time_end_at' => ['required'],
             'year_start_at' => ['required'],
             'year_end_at' => ['required'],
+            'start_at' => ['required'],
+            'end_at' => ['required'],
             'section_type_id' => ['required'],
             'user_id' => ['required']
         ];

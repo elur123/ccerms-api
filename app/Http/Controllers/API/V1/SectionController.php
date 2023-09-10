@@ -20,7 +20,7 @@ class SectionController extends Controller
         ->get();
 
         return response()->json([
-            'sections' => $sections
+            'sections' => SectionResource::collection($sections)
         ], 200);
     }
 
@@ -42,7 +42,7 @@ class SectionController extends Controller
         $section->load('teacher', 'sectionType', 'students', 'groups');
 
         return response()->json([
-            'section' => new SectionResource($section)
+            'section' => SectionResource::make($section)
         ]);
     }
 

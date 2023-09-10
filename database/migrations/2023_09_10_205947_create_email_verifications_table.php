@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('email_verifications', function (Blueprint $table) {
             $table->id();
+            $table->foreignUuid('user_id')->constrained('users');
+            $table->string('email');
             $table->string('key');
-            $table->string('label');
-            $table->string('value');
+            $table->foreignId('status_id')->constrained('statuses');
+            $table->timestamps();
         });
     }
 
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('email_verifications');
     }
 };

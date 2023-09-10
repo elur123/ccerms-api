@@ -51,6 +51,23 @@ class User extends Authenticatable
     {
         $query->where('status_id', StatusEnum::APPROVED->value);
     }
+    public function scopeFilter($query, $keyword)
+    {
+        if (! $keyword) {
+            return $query;
+        }
+
+        $attributes = [
+            'users.name',
+            'users.email',
+        ];
+
+        $attributes = implode(', ', $attributes);
+
+        return $query->whereRaw("
+            (CONCAT_WS(' ', {$attributes}) like '%{$keyword}%')
+        ");
+    }
 
     /**
      * 
@@ -69,5 +86,10 @@ class User extends Authenticatable
     public function studentDetails()
     {
         return $this->hasOne(StudentDetail::class, 'user_id');
+    }
+
+    public function emailVerification()
+    {
+        return $this->hasOne(EmailVerification::class, 'user_id');
     }
 }

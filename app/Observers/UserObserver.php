@@ -47,6 +47,7 @@ class UserObserver
         if ($user->role_id === RoleEnum::STUDENT->value) 
         {
             $user->studentDetails()->create([
+                'student_id' => request()->student_id,
                 'course_id' => request()->course_id
             ]);
         }

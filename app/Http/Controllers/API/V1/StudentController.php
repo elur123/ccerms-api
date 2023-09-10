@@ -18,12 +18,22 @@ class StudentController extends Controller
         $students = User::query()
         ->with('studentDetails.course', 'status', 'role')
         ->student()
-        ->get();
+        ->filter(request()->s)
+        ->when(request()->orderBy && request()->orderFunction, function ($query) {
+            if (request()->orderBy == 'course') 
+            {
+                $query->orderBy('courses.label', request()->orderFunction);
+            }
+            else
+            {
+                $query->orderBy(request()->orderBy, request()->orderFunction);
+            }
+            
+        })
+        ->paginate(10);
 
 
-        return response()->json([
-            'students' => UserResource::collection($students)
-        ], 200);
+        return UserResource::collection($students);
     }
 
     /**

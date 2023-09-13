@@ -39,7 +39,7 @@ class Section extends Model
 
     public function students()
     {
-        return $this->belongsToMany(User::class, 'section_students', 'section_id', 'user_id')->withPivot('status_id');
+        return $this->belongsToMany(User::class, 'section_students', 'section_id', 'user_id')->withPivot(['status_id']);
     }
 
     public function groups()

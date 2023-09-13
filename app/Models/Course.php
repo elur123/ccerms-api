@@ -10,6 +10,7 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
+        'course_code',
         'label',
         'milestone_one',
         'milestone_two',

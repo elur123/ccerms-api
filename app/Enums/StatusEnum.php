@@ -14,4 +14,13 @@ enum StatusEnum: int
     case RESCHED = 8;
     case ONGOING = 9;
     case DONE = 10;
+
+    public static function toArray(): array
+    {
+        $array = [];
+        foreach (self::cases() as $case) {
+            $array[$case->name] = $case->value;
+        }
+        return $array;
+    }
 }

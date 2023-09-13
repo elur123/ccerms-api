@@ -21,7 +21,7 @@ class GetSectionAvailableStudents
 
         return User::query()
         ->student()
-        ->approved()
+        // ->approved()
         ->whereNotIn('id', $student_ids)
         ->get()
         ->map(fn ($student) => [

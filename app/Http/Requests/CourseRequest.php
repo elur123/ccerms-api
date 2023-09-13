@@ -37,6 +37,7 @@ class CourseRequest extends FormRequest
     public function postValidation(): array
     {
         return [
+            'course_code' => ['required', 'string', 'max:50', Rule::unique('courses')],
             'label' => ['required', 'string', 'max:50', Rule::unique('courses')],
             'milestone_one' => ['required'],
             'milestone_two' => ['required']
@@ -46,6 +47,7 @@ class CourseRequest extends FormRequest
     public function putValidation(): array
     {
         return [
+            'course_code' => ['required', 'string', 'max:50', Rule::unique('courses')->ignore($this->course->id)],
             'label' => ['required', 'string', 'max:50', Rule::unique('courses')->ignore($this->course->id)],
             'milestone_one' => ['required'],
             'milestone_two' => ['required']

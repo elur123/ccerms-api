@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\SectionStudentResource;
 use App\Http\Resources\GroupResource;
 
 class SectionResource extends JsonResource
@@ -31,7 +31,7 @@ class SectionResource extends JsonResource
             'user_id' => $this->user_id,
             'section_type' => $this->whenLoaded('sectionType'),
             'teacher' => new UserResource($this->whenLoaded('teacher')),
-            'students' => UserResource::collection($this->whenLoaded('students')),
+            'students' => SectionStudentResource::collection($this->whenLoaded('students')),
             'groups' => GroupResource::collection($this->whenLoaded('groups'))
         ];
     }

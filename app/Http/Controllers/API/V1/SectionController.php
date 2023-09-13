@@ -16,7 +16,7 @@ class SectionController extends Controller
     public function index()
     {
         $sections = Section::query()
-        ->with('teacher', 'sectionType', 'students', 'groups')
+        ->with(['teacher', 'sectionType', 'students', 'groups'])
         ->get();
 
         return response()->json([

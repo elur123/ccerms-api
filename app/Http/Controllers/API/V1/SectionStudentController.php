@@ -14,6 +14,7 @@ use App\Enums\StatusEnum;
 use App\Models\User;
 use App\Models\SectionStudent;
 use App\Models\Section;
+use App\Models\Course;
 class SectionStudentController extends Controller
 {
     
@@ -32,10 +33,14 @@ class SectionStudentController extends Controller
             'student_id' => 'required'
         ]);
 
-        SectionStudent::create([
-            'section_id' => $section->id,
-            'user_id' => $request->student_id
-        ]);
+        // Find and create if not exist student in section
+        $findSectionStudent = $section->students()
+        ->where('user_id', $request->student_id)
+        ->count();
+
+        if ($findSectionStudent <= 0) {
+            $section->students()->attach($request->student_id, ['status_id' => StatusEnum::PENDING->value]);
+        }
 
         return response()->json([
             'students' => UserResource::collection($section->students),
@@ -68,7 +73,8 @@ class SectionStudentController extends Controller
                 );
             });
 
-            $course_id = 1;
+            $course = Course::where('course_code', $value['course_code'])->first();
+            $course_id = $course?->id ?? null;
             
             // Create student details
             $student->studentDetails()->firstOrCreate(
@@ -76,7 +82,7 @@ class SectionStudentController extends Controller
                 ['course_id' => $course_id, 'student_id' => $value['student_id']]
             );
 
-            // Find and create if not exist studen in section
+            // Find and create if not exist student in section
             $findSectionStudent = $section->students()
             ->where('user_id', $student->id)
             ->count();

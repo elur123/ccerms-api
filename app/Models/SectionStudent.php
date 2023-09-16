@@ -18,9 +18,9 @@ class SectionStudent extends Model
 
     public $timestamps = false;
 
-    protected $casts = [
-        'status_id' => StatusEnum::class,
-    ];
+    // protected $casts = [
+    //     'status_id' => StatusEnum::class,
+    // ];
 
     /**
      * 

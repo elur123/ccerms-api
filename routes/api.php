@@ -59,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('users', UserController::class);
 
     Route::put('students/{student}/status', [StudentController::class, 'status'])->name('students.status'); 
+    Route::post('students/import', [StudentController::class, 'import'])->name('students.import'); 
     Route::resource('students', StudentController::class);
 
     Route::resource('groups', GroupController::class);

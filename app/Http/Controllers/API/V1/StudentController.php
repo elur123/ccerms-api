@@ -4,8 +4,11 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Services\SendActivationEmail;
+use App\Services\StoreImportStudent;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Imports\StudentImport;
 
 use App\Models\User;
 class StudentController extends Controller
@@ -90,5 +93,28 @@ class StudentController extends Controller
         ]);
         
         return $this->index();
+    }
+
+    public function import(
+        Request $request, 
+        StoreImportStudent $importStudent,
+        SendActivationEmail $send
+    )
+    {
+        $request->validate([
+            'file' => ['required']
+        ]);
+
+        $imported = $importStudent->execute($request->file('file'));
+
+        foreach ($imported as $key => $student) {
+            // Send email verification
+            $send->execute($student);   
+        }
+
+
+        return response()->json([
+            'students' => $imported
+        ], 200);
     }
 }

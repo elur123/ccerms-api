@@ -42,6 +42,11 @@ class Section extends Model
         return $this->belongsToMany(User::class, 'section_students', 'section_id', 'user_id')->withPivot(['status_id']);
     }
 
+    public function sectionStudent()
+    {
+        return $this->hasMany(SectionStudent::class, 'section_id');
+    }
+
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'section_groups', 'section_id', 'group_id');

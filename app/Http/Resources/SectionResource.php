@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\SectionStudentResource;
 use App\Http\Resources\GroupResource;
+use App\Http\Resources\UserResource;
 
 class SectionResource extends JsonResource
 {
@@ -31,7 +32,7 @@ class SectionResource extends JsonResource
             'user_id' => $this->user_id,
             'section_type' => $this->whenLoaded('sectionType'),
             'teacher' => new UserResource($this->whenLoaded('teacher')),
-            'students' => SectionStudentResource::collection($this->whenLoaded('students')),
+            'students' => SectionStudentResource::collection($this->whenLoaded('sectionStudent')),
             'groups' => GroupResource::collection($this->whenLoaded('groups'))
         ];
     }

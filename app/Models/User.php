@@ -23,6 +23,7 @@ class User extends Authenticatable
         'role_id',
         'status_id',
         'mobile_number',
+        'image_url',
         'address',
         'can_advise',
         'can_panel',

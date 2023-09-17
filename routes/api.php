@@ -28,6 +28,7 @@ use App\Http\Controllers\API\V1\BoardController;
 use App\Http\Controllers\API\V1\SettingController;
 use App\Http\Controllers\API\V1\TestController;
 use App\Http\Controllers\API\V1\AccountActivationController;
+use App\Http\Controllers\API\V1\ProfileController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -116,4 +117,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('settings/{setting}', [SettingController::class, 'update'])->name('settings.update');
+
+    Route::get('profile/{profile}', [ProfileController::class, 'select'])->name('profile.select');
+    Route::put('profile/{profile}', [ProfileController::class, 'update'])->name('profile.update');
 });

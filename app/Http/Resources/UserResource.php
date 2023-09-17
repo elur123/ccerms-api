@@ -16,8 +16,11 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $imageUrl = $this->image_url != null ? config('app.url') .'/'. str_replace('public', 'storage', $this->image_url) : 'https://placehold.co/600x400';
+
         return [
             'id' => $this->id,
+            'image_url' => $imageUrl,
             'name' => $this->name,
             'email' => $this->email,
             'address' => $this->address,

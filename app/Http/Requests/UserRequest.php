@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Enums\RoleEnum;
 use App\Models\Role;
-
+use App\Models\Setting;
 class UserRequest extends FormRequest
 {
     /**
@@ -44,9 +44,13 @@ class UserRequest extends FormRequest
 
     public function postValidation($roles): array
     {
+        $setting = Setting::query()
+        ->where('key', 'email_extension')
+        ->first();
+
         return [
             'name' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'email', Rule::unique('users')],
+            'email' => ['required', 'email', 'ends_with:'.$setting->value, Rule::unique('users')],
             'password' => ['required', 'string', 'max:8'],
             'role_id' => ['required', Rule::in($roles)],
             'course_id' => ['exclude_unless:role_id,'.RoleEnum::STUDENT->value, 'required'],
@@ -58,9 +62,13 @@ class UserRequest extends FormRequest
 
     public function putValidation($roles): array
     {
+        $setting = Setting::query()
+        ->where('key', 'email_extension')
+        ->first();
+
         return [
             'name' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'email', Rule::unique('users')->ignore($this->student->id ?? $this->user->id)],
+            'email' => ['required', 'email',  'ends_with:'.$setting->value, Rule::unique('users')->ignore($this->student->id ?? $this->user->id)],
             'role_id' => ['required', Rule::in($roles)],
             'course_id' => ['exclude_unless:role_id,'.RoleEnum::STUDENT->value, 'required'],
             'can_advise' => ['sometimes', 'required', 'boolean'],

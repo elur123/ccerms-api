@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             SectionTypeSeeder::class,
             CapstoneTypeSeeder::class,
             SettingSeeder::class,
+            CourseSeeder::class
         ]);
     }
 }

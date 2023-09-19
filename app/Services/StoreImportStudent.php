@@ -3,12 +3,14 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Imports\StudentImport;
 use App\Enums\RoleEnum;
 use App\Enums\StatusEnum;
 
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Setting;
 class StoreImportStudent {
 
     public function execute($file)
@@ -18,8 +20,12 @@ class StoreImportStudent {
 
 
         $students = [];
+        $setting = Setting::query()
+        ->where('key', 'email_extension')
+        ->first();
+
         foreach ($import->data as $key => $value) {
-            if ($key != 0) {
+            if ($key != 0 && Str::endsWith($value['email'], $setting->value)) {
                 // Create student user
                 $student = User::withoutEvents(function () use($value) {
                     return User::firstOrCreate(

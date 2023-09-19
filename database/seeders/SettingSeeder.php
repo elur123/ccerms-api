@@ -16,7 +16,7 @@ class SettingSeeder extends Seeder
         Setting::truncate();
 
         Setting::upsert([
-            ['key' => 'section_days_span', 'label' => 'Section days span', 'value' => 30],
+            ['key' => 'section_days_span', 'label' => 'Section days span', 'value' => 5],
             ['key' => 'email_extension', 'label' => 'Email extension', 'value' => '@umindanao.edu.ph'],
         ], ['key', 'label', 'value']);
     }

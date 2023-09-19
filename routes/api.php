@@ -29,6 +29,7 @@ use App\Http\Controllers\API\V1\SettingController;
 use App\Http\Controllers\API\V1\TestController;
 use App\Http\Controllers\API\V1\AccountActivationController;
 use App\Http\Controllers\API\V1\ProfileController;
+use App\Http\Controllers\API\V1\CronController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -45,12 +46,7 @@ Route::prefix('public')->name('public.')->group(function () {
 });
 
 Route::prefix('activation')->name('activation.')->group(function () {
-
     Route::get('activate/{email}/{key}', [AccountActivationController::class, 'activate'])->name('activate');
-});
-
-Route::prefix('test')->name('test.')->group(function () {
-    Route::get('send-activation', [TestController::class, 'sendAccountActivation'])->name('send-activation');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -120,4 +116,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('profile/{profile}', [ProfileController::class, 'select'])->name('profile.select');
     Route::put('profile/{profile}', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+Route::prefix('test')->name('test.')->group(function () {
+    Route::get('send-activation', [TestController::class, 'sendAccountActivation'])->name('send-activation');
+});
+
+Route::prefix('cron')->name('cron.')->group(function () {
+    Route::get('checkSectionStudent', [CronController::class, 'checkSectionStudent'])->name('check-section-student');
 });

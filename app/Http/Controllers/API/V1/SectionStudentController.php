@@ -41,7 +41,7 @@ class SectionStudentController extends Controller
         ->count();
 
         if ($findSectionStudent <= 0) {
-            $section->students()->attach($request->student_id, ['status_id' => StatusEnum::PENDING->value]);
+            $section->students()->attach($request->student_id, ['status_id' => StatusEnum::ONGOING->value]);
         }
 
         $section->sectionStudent->load(['student', 'status']);
@@ -75,7 +75,7 @@ class SectionStudentController extends Controller
             ->count();
 
             if ($findSectionStudent <= 0) {
-                $section->students()->attach($student->id, ['status_id' => StatusEnum::PENDING->value]);
+                $section->students()->attach($student->id, ['status_id' => StatusEnum::ONGOING->value]);
             }
 
             // Send email verification

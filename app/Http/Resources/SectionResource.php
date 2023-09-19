@@ -28,12 +28,15 @@ class SectionResource extends JsonResource
             'year_end_at' => $this->year_end_at,
             'start_at' => Carbon::parse($this->start_at)->format('M d, Y'),
             'end_at' => Carbon::parse($this->end_at)->format('M d, Y'),
+            'started_at' => $this->start_at,
+            'ended_at' => $this->end_at,
             'section_type_id' => $this->section_type_id,
             'user_id' => $this->user_id,
             'section_type' => $this->whenLoaded('sectionType'),
             'teacher' => new UserResource($this->whenLoaded('teacher')),
             'students' => SectionStudentResource::collection($this->whenLoaded('sectionStudent')),
-            'groups' => GroupResource::collection($this->whenLoaded('groups'))
+            'groups' => GroupResource::collection($this->whenLoaded('groups')),
+            'status' => $this->whenLoaded('status')
         ];
     }
 }

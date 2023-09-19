@@ -14,8 +14,10 @@ class SectionTypeSeeder extends Seeder
     public function run(): void
     {
         SectionType::upsert([
-            ['label' => '1st Semester'],
-            ['label' => '2nd Semester'],
+            ['label' => '1st Semester / 1st term'],
+            ['label' => '1st Semester / 2nd term'],
+            ['label' => '2nd Semester / 1st term'],
+            ['label' => '2nd Semester / 2nd term'],
             ['label' => 'Summer'],
         ], ['label']);
     }

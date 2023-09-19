@@ -32,6 +32,8 @@ class SectionGroupController extends Controller
             'group_id' => $request->group_id
         ]);
 
+        $section->groups->load('groupMilestone');
+
         return response()->json([
             'groups' => GroupResource::collection($section->groups),
             'available' => $avialableGroups->execute($params = ['year_end' => $section->year_end_at, 'semester' => $section->section_type_id])
@@ -47,6 +49,8 @@ class SectionGroupController extends Controller
         SectionGroup::where('section_id', $section->id)
         ->where('group_id', $group_id)
         ->delete();
+
+        $section->groups->load('groupMilestone');
 
         return response()->json([
             'groups' => GroupResource::collection($section->groups),

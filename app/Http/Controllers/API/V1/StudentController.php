@@ -42,9 +42,13 @@ class StudentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserRequest $request)
+    public function store(
+        UserRequest $request,
+        SendActivationEmail $send
+    )
     {
-        User::create($request->validated());
+        $student = User::create($request->validated());
+        $send->execute($student);
 
         return $this->index();
     }

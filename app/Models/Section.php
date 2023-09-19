@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\StatusEnum;
 
 class Section extends Model
 {
@@ -19,8 +20,19 @@ class Section extends Model
         'start_at',
         'end_at',
         'section_type_id',
-        'user_id'
+        'user_id',
+        'status_id'
     ]; 
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (Section $section) {
+            $section->status_id = StatusEnum::ONGOING->value;
+        });
+    }
 
     /**
      * 
@@ -50,5 +62,10 @@ class Section extends Model
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'section_groups', 'section_id', 'group_id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id');
     }
 }

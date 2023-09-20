@@ -34,9 +34,10 @@ class SectionGroupController extends Controller
 
         $section->groups->load('groupMilestone');
 
+        $params = ['year_end' => $section->year_end_at, 'semester' => $section->section_type_id, 'capstone_type' => $section->capstone_type_id];
         return response()->json([
             'groups' => GroupResource::collection($section->groups),
-            'available' => $avialableGroups->execute($params = ['year_end' => $section->year_end_at, 'semester' => $section->section_type_id])
+            'available' => $avialableGroups->execute($params)
         ], 200);
     }
 
@@ -52,9 +53,11 @@ class SectionGroupController extends Controller
 
         $section->groups->load('groupMilestone');
 
+        $params = ['year_end' => $section->year_end_at, 'semester' => $section->section_type_id, 'capstone_type' => $section->capstone_type_id];
+
         return response()->json([
             'groups' => GroupResource::collection($section->groups),
-            'available' => $avialableGroups->execute($params = ['year_end' => $section->year_end_at, 'semester' => $section->section_type_id])
+            'available' => $avialableGroups->execute($params)
         ], 200);
     }
 }

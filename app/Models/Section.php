@@ -20,6 +20,7 @@ class Section extends Model
         'start_at',
         'end_at',
         'section_type_id',
+        'capstone_type_id',
         'user_id',
         'status_id'
     ]; 
@@ -42,6 +43,11 @@ class Section extends Model
     public function sectionType()
     {
         return $this->belongsTo(SectionType::class, 'section_type_id');
+    }
+
+    public function capstoneType()
+    {
+        return $this->belongsTo(CapstoneType::class, 'capstone_type_id');
     }
 
     public function teacher()

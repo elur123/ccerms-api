@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('sections', function (Blueprint $table) {
             $table->foreignId('section_type_id')->constrained('section_types');
             $table->foreignId('status_id')->constrained('statuses');
+            $table->foreignId('capstone_type_id')->constrained('capstone_types');
             $table->foreignUuid('user_id')->constrained('users');
         });
     }

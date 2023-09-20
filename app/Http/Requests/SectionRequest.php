@@ -47,6 +47,7 @@ class SectionRequest extends FormRequest
             'start_at' => ['required'],
             'end_at' => ['required'],
             'section_type_id' => ['required'],
+            'capstone_type_id' => ['required'],
             'user_id' => ['required']
         ];
     }

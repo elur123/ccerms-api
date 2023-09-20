@@ -20,6 +20,7 @@ class GetSectionAvailableGroups
 
         return Group::query()
         ->whereNotIn('id', $group_ids)
+        ->where('capstone_type_id', $params['capstone_type'])
         ->get()
         ->map(fn ($group) => [
             'id' => $group->id,

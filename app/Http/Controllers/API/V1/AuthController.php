@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
+use App\Http\Resources\UserResource;
 use App\Enums\StatusEnum;
 use App\Enums\RoleEnum;
 
@@ -33,10 +34,6 @@ class AuthController extends Controller
             ]);
         }
 
-        if ($user->role_id === RoleEnum::STUDENT->value) {
-           $user->load('studentDetails.groupMember');
-        }
-
         if (!in_array($user->status_id, $statusProhibit)) {
             throw ValidationException::withMessages([
                 'status' => ['Wait for the admin to verify your account.'],
@@ -47,7 +44,7 @@ class AuthController extends Controller
      
         return response()->json([
             'message' => 'Successfully login',
-            'user' => $user,
+            'user' => UserResource::make($user),
             'token' => $user->createToken('api_token')->plainTextToken
         ], 200);
     }

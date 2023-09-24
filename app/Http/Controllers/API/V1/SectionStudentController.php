@@ -19,6 +19,15 @@ use App\Models\Section;
 use App\Models\Course;
 class SectionStudentController extends Controller
 {
+
+    public function sectionLists(User $user)
+    {
+        $sections = $user->studentDetails->sections->load('section.teacher');
+
+        return response()->json([
+            'sections' => SectionStudentResource::collection($sections)
+        ], 200);
+    }
     
     public function availableStudents(Request $request, GetSectionAvailableStudents $availableStudents)
     {

@@ -34,4 +34,9 @@ class StudentDetail extends Model
     {
         return $this->hasOne(GroupMember::class, 'user_id', 'user_id');
     }
+
+    public function sections()
+    {
+        return $this->hasMany(SectionStudent::class, 'user_id', 'user_id');
+    }
 }

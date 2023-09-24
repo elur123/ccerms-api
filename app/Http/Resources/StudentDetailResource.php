@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\CourseResource;
+use App\Http\Resources\GroupResource;
 
 class StudentDetailResource extends JsonResource
 {
@@ -17,8 +18,9 @@ class StudentDetailResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'user' => new UserResource($this->whenLoaded('user')),
-            'course' => new CourseResource($this->whenLoaded('course'))
+            'user' => UserResource::make($this->whenLoaded('user')),
+            'course' => CourseResource::make($this->whenLoaded('course')),
+            'groupMember' =>  $this->whenLoaded('groupMember')
         ];
     }
 }

@@ -58,7 +58,7 @@ class StudentController extends Controller
      */
     public function show(User $student)
     {
-        $student->load('studentDetails.course', 'status', 'role');
+        $student->load('studentDetails.course', 'studentDetails.groupMember', 'status', 'role');
 
         return response()->json([
             'student' => new UserResource($student)

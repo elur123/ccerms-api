@@ -65,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('sections', SectionController::class);
 
+    Route::get('section-student/{user}', [SectionStudentController::class, 'sectionLists'])->name('section-student.list');
     Route::get('section-student', [SectionStudentController::class, 'availableStudents'])->name('section-student.available-students');
     Route::post('section-student/{section}', [SectionStudentController::class, 'store'])->name('section-student.store');
     Route::post('section-student/{section}/import', [SectionStudentController::class, 'import'])->name('section-student.import');

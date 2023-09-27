@@ -29,7 +29,9 @@ use App\Http\Controllers\API\V1\SettingController;
 use App\Http\Controllers\API\V1\TestController;
 use App\Http\Controllers\API\V1\AccountActivationController;
 use App\Http\Controllers\API\V1\ProfileController;
+use App\Http\Controllers\API\V1\DefenseVenueController;
 use App\Http\Controllers\API\V1\CronController;
+use App\Http\Controllers\API\V1\DashboardController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -49,7 +51,17 @@ Route::prefix('activation')->name('activation.')->group(function () {
     Route::get('activate/{email}/{key}', [AccountActivationController::class, 'activate'])->name('activate');
 });
 
+Route::prefix('test')->name('test.')->group(function () {
+    Route::get('send-activation', [TestController::class, 'sendAccountActivation'])->name('send-activation');
+});
+
+Route::prefix('cron')->name('cron.')->group(function () {
+    Route::get('checkSectionStudent', [CronController::class, 'checkSectionStudent'])->name('check-section-student');
+});
+
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     
     Route::get('users/teachers', [UserController::class, 'teachers'])->name('users.teachers'); 
     Route::put('users/{user}/status', [UserController::class, 'status'])->name('users.status'); 
@@ -79,6 +91,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('defenses', DefenseScheduleController::class);
     
     Route::resource('defensetypes', DefenseTypeController::class);
+
+    Route::resource('defensevenues', DefenseVenueController::class);
 
     Route::resource('capstonetypes', CapstoneTypeController::class);
 
@@ -117,12 +131,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('profile/{profile}', [ProfileController::class, 'select'])->name('profile.select');
     Route::put('profile/{profile}', [ProfileController::class, 'update'])->name('profile.update');
-});
-
-Route::prefix('test')->name('test.')->group(function () {
-    Route::get('send-activation', [TestController::class, 'sendAccountActivation'])->name('send-activation');
-});
-
-Route::prefix('cron')->name('cron.')->group(function () {
-    Route::get('checkSectionStudent', [CronController::class, 'checkSectionStudent'])->name('check-section-student');
 });

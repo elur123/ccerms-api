@@ -14,10 +14,10 @@ class DefenseSchedule extends Model
         'venue',
         'start_at',
         'end_at',
-        'schedule_at',
         'type_id',
         'group_id',
-        'status_id'
+        'status_id',
+        'step_id'
     ];
 
     /**
@@ -43,6 +43,11 @@ class DefenseSchedule extends Model
     public function group()
     {
         return $this->belongsTo(Group::class, 'group_id');
+    }
+
+    public function step()
+    {
+        return $this->belongsTo(MilestoneList::class, 'step_id');
     }
 
     public function status()

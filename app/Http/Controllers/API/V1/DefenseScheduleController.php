@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\DefenseScheduleRequest;
 use App\Http\Resources\DefenseScheduleResource;
+use App\Services\GetAvailableGroups;
 
 use App\Models\DefenseSchedule;
 class DefenseScheduleController extends Controller
@@ -16,7 +17,7 @@ class DefenseScheduleController extends Controller
     public function index()
     {
         $schedules = DefenseSchedule::query()
-        ->with('type', 'group.advisers', 'group.panels', 'status', 'panels', 'minute.contents')
+        ->with('type', 'step', 'group.advisers', 'group.panels', 'group.groupMilestone', 'status', 'panels', 'minute.contents')
         ->get();
 
         return response()->json([
@@ -39,7 +40,7 @@ class DefenseScheduleController extends Controller
      */
     public function show(DefenseSchedule $defense)
     {
-        $defense->load('type.minuteTemplate.contents', 'group.members', 'group.advisers', 'group.panels', 'status', 'panels', 'minute.contents');
+        $defense->load('type.minuteTemplate.contents', 'group.members', 'group.advisers', 'group.panels', 'group.groupMilestone', 'status', 'panels', 'minute.contents');
 
         return response()->json([
             'schedule' => new DefenseScheduleResource($defense)
@@ -71,5 +72,12 @@ class DefenseScheduleController extends Controller
         ]);
 
         return $this->index();
+    }
+
+    public function availableGroups(GetAvailableGroups $groupAvailable)
+    {
+        return response()->json([
+            'groups' => $groupAvailable->execute()
+        ], 200);
     }
 }

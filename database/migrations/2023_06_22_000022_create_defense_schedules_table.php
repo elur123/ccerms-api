@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('defense_schedules', function (Blueprint $table) {
             $table->id();
             $table->string('venue');
-            $table->time('start_at');
-            $table->time('end_at');
-            $table->date('schedule_at');
+            $table->dateTime('start_at');
+            $table->dateTime('end_at');
             $table->timestamps();
         });
     }

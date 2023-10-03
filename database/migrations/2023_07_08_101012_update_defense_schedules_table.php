@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('type_id')->constrained('defense_types');
             $table->foreignId('group_id')->constrained('groups');
             $table->foreignId('status_id')->constrained('statuses');
+            $table->foreignId('step_id')->constrained('milestone_lists');
         });
     }
 

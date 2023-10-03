@@ -87,6 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('section-group/{section}', [SectionGroupController::class, 'store'])->name('section-group.store');
     Route::delete('section-group/{section}/{group}', [SectionGroupController::class, 'destroy'])->name('section-group.destroy');
 
+    Route::get('defenses/available-groups', [DefenseScheduleController::class, 'availableGroups'])->name('defenses.availableGroups');
     Route::put('defenses/{defense}/status', [DefenseScheduleController::class, 'status'])->name('defenses.status');
     Route::resource('defenses', DefenseScheduleController::class);
     

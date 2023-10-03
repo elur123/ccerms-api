@@ -40,9 +40,16 @@ class DefenseScheduleRequest extends FormRequest
     {
         return [
             'venue' => ['required', 'string', 'max:255'],
-            'start_at' => ['required'],
-            'end_at' => ['required'],
-            'schedule_at' => ['required', 'date', 'after_or_equal:today'],
+            'start_at' => [
+                'required',
+                'date',
+                'after_or_equal:today'
+            ],
+            'end_at' => [
+                'required',
+                'date',
+                'after:start_at',
+            ],
             'type_id' => ['required'],
             'group_id' => [
                 'required', 
@@ -50,7 +57,8 @@ class DefenseScheduleRequest extends FormRequest
                     return $query->where('group_id', request()->group_id)
                     ->where('status_id', StatusEnum::PENDING->value);
                 }),
-            ]
+            ],
+            'step_id' => ['required']
         ];
     }
 
@@ -58,9 +66,16 @@ class DefenseScheduleRequest extends FormRequest
     {
         return [
             'venue' => ['required', 'string', 'max:255'],
-            'start_at' => ['required'],
-            'end_at' => ['required'],
-            'schedule_at' => ['required', 'date', 'after_or_equal:today'],
+            'start_at' => [
+                'required',
+                'date',
+                'after_or_equal:today'
+            ],
+            'end_at' => [
+                'required',
+                'date',
+                'after:start_at',
+            ],
             'type_id' => ['required'],
             'group_id' => [
                 'required', 
@@ -68,7 +83,8 @@ class DefenseScheduleRequest extends FormRequest
                     return $query->where('group_id', request()->group_id)
                     ->where('status_id', StatusEnum::PENDING->value);
                 })->ignore($this->defense->id)
-            ]
+            ],
+            'step_id' => ['required']
         ];
     }
 

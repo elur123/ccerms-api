@@ -26,7 +26,9 @@ class GroupResource extends JsonResource
             'isDone' => $this->is_done, 
             'course_id' => $this->course_id,
             'capstone_type_id' => $this->capstone_type_id,
-            'progress' => $this->whenLoaded('groupMilestone')->sum('progress') / $this->whenLoaded('groupMilestone')->count(),
+            'progress' => $this->whenLoaded('groupMilestone', function() {
+                return $this->whenLoaded('groupMilestone')->sum('progress') / $this->whenLoaded('groupMilestone')->count();
+            }),
             'course' => CourseResource::make($this->whenLoaded('course')),
             'capstoneType' => CapstoneTypeResource::make($this->whenLoaded('capstoneType')),
             'milestones' => GroupMilestoneResource::collection($this->whenLoaded('groupMilestone')),

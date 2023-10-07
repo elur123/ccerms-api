@@ -14,6 +14,8 @@ class GroupMilestone extends Model
         'group_id',
         'milestone_id',
         'milestone_list_id',
+        'capstone_type_id',
+        'is_open',
     ];
 
     /**

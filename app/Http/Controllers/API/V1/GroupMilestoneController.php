@@ -20,4 +20,13 @@ class GroupMilestoneController extends Controller
 
         return $groupmilestone;
     }
+
+    public function updateStatus(Request $request, GroupMilestone $groupmilestone)
+    {
+        $groupmilestone->update([
+            'is_open' => $request->is_open
+        ]);
+
+        return $groupmilestone;
+    }
 }

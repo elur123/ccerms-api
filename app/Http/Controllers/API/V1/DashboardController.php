@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Enums\RoleEnum;
 use App\Enums\StatusEnum;
 use App\Enums\CapstoneTypeEnum;
+use Carbon\Carbon;
+use App\Http\Resources\DefenseScheduleResource;
 
 use App\Models\Section;
 use App\Models\SectionStudent;
@@ -14,6 +16,7 @@ use App\Models\SectionGroup;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Course;
+use App\Models\DefenseSchedule;
 class DashboardController extends Controller
 {
     
@@ -38,6 +41,7 @@ class DashboardController extends Controller
             $data->groupsCounts = 0;
             $data->capstoneOne = [ 'label' => [], 'data' => []];
             $data->capstoneTwo = [ 'label' => [], 'data' => []];
+            $data->schedules = [];
 
 
             $data->rcCount = User::where('role_id', RoleEnum::RESEARCH_COORDINATOR->value)
@@ -131,6 +135,12 @@ class DashboardController extends Controller
 
                     $data->capstoneTwo['label'] = $capstoneTwo->pluck('group_name');
                     $data->capstoneTwo['data'] = $capstoneTwo->pluck('capstoneOnePercent');
+
+                    $data->schedules = DefenseScheduleResource::collection(DefenseSchedule::query()
+                    ->with('group', 'type', 'status')
+                    ->whereDate('start_at', Carbon::now())
+                    ->get());
+
                     break;
             }
         }

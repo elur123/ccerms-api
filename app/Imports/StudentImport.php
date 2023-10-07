@@ -18,7 +18,7 @@ class StudentImport implements ToCollection
         $this->data = $rows->map(fn($row) => [
             'student_id' => $row[0],
             'name' => $row[1],
-            'email' => $row[2],
+            'email' => $row[10],
             'course_code' => $row[3]
         ]);
     }

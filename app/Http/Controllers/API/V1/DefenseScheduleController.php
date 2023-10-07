@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\DefenseScheduleRequest;
 use App\Http\Resources\DefenseScheduleResource;
 use App\Services\GetAvailableGroups;
+use App\Services\UpdateMilestoneStatus;
+use App\Enums\StatusEnum;
 
 use App\Models\DefenseSchedule;
 class DefenseScheduleController extends Controller
@@ -65,11 +67,15 @@ class DefenseScheduleController extends Controller
         //
     }
 
-    public function status(Request $request, DefenseSchedule $defense)
+    public function status(Request $request, DefenseSchedule $defense, UpdateMilestoneStatus $milestoneStatus)
     {
         $defense->update([
             'status_id' => $request->status
         ]);
+
+        if ($request->status == StatusEnum::RESCHED->value) {
+            $milestoneStatus->execute($defense);
+        }
 
         return $this->index();
     }

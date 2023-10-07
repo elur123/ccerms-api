@@ -18,6 +18,9 @@ class SettingSeeder extends Seeder
         Setting::upsert([
             ['key' => 'section_days_span', 'label' => 'Section days span', 'value' => 5],
             ['key' => 'email_extension', 'label' => 'Email extension', 'value' => '@umindanao.edu.ph'],
+            ['key' => 'student_submission_span', 'label' => 'Student submission span', 'value' => 5],
+            ['key' => 'adviser_check_span', 'label' => 'Adviser check span', 'value' => 3],
+            ['key' => 'panel_check_span', 'label' => 'Panel check span', 'value' => 3],
         ], ['key', 'label', 'value']);
     }
 }

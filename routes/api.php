@@ -57,6 +57,7 @@ Route::prefix('test')->name('test.')->group(function () {
 
 Route::prefix('cron')->name('cron.')->group(function () {
     Route::get('checkSectionStudent', [CronController::class, 'checkSectionStudent'])->name('check-section-student');
+    Route::get('checkGroupDefenseSchedule', [CronController::class, 'checkGroupDefenseSchedule'])->name('check-group-defense');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -102,6 +103,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('milestone-lists', MilestoneListController::class);
 
     Route::put('group-milestone/{groupmilestone}', [GroupMilestoneController::class, 'update'])->name('group-milestone.update');
+    Route::put('group-milestone/{groupmilestone}/status', [GroupMilestoneController::class, 'updateStatus'])->name('group-milestone.update-status');
 
     Route::post('group-member/{group}', [GroupMemberController::class, 'store'])->name('group-member.store');
     Route::delete('group-member/{group}/{member}', [GroupMemberController::class, 'destroy'])->name('group-member.destroy');

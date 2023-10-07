@@ -18,6 +18,7 @@ class StudentDetailResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'student_id' => $this->student_id,
             'user' => UserResource::make($this->whenLoaded('user')),
             'course' => CourseResource::make($this->whenLoaded('course')),
             'groupMember' =>  $this->whenLoaded('groupMember')

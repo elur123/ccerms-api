@@ -32,6 +32,7 @@ use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\DefenseVenueController;
 use App\Http\Controllers\API\V1\CronController;
 use App\Http\Controllers\API\V1\DashboardController;
+use App\Http\Controllers\API\V1\ReportController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -134,4 +135,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('profile/{profile}', [ProfileController::class, 'select'])->name('profile.select');
     Route::put('profile/{profile}', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::prefix('report')->name('report.')->group(function () {
+        Route::get('student/{startDate}/{endDate}', [ReportController::class, 'student'])->name('student');
+        Route::get('group/{startDate}/{endDate}', [ReportController::class, 'group'])->name('group');
+        Route::get('section/{startDate}/{endDate}', [ReportController::class, 'section'])->name('section');
+    });
 });

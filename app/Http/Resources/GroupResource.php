@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Enums\CapstoneTypeEnum;
 
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\CapstoneTypeResource;
@@ -28,6 +29,18 @@ class GroupResource extends JsonResource
             'capstone_type_id' => $this->capstone_type_id,
             'progress' => $this->whenLoaded('groupMilestone', function() {
                 return $this->whenLoaded('groupMilestone')->sum('progress') / $this->whenLoaded('groupMilestone')->count();
+            }),
+            'oneProgress' => $this->whenLoaded('groupMilestone', function() {
+                return $this->whenLoaded('groupMilestone')
+                ->where('capstone_type_id', CapstoneTypeEnum::ONE->value)
+                ->pluck('progress')
+                ->first();
+            }),
+            'twoProgress' => $this->whenLoaded('groupMilestone', function() {
+                return $this->whenLoaded('groupMilestone')
+                ->where('capstone_type_id', CapstoneTypeEnum::TWO->value)
+                ->pluck('progress')
+                ->first();
             }),
             'course' => CourseResource::make($this->whenLoaded('course')),
             'capstoneType' => CapstoneTypeResource::make($this->whenLoaded('capstoneType')),

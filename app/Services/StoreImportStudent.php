@@ -39,7 +39,7 @@ class StoreImportStudent {
                     );
                 });
 
-                $course = Course::where('course_code', $value['course_code'])->first();
+                $course = Course::where('key', $value['key'])->first();
                 $course_id = $course?->id ?? null;
                 
                 // Create student details

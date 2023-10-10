@@ -69,14 +69,14 @@ class CourseSeeder extends Seeder
         ]);
 
         Course::create([
-            'course_code' => 101,
+            'key' => 'IT',
             'label' => 'BSIT',
             'milestone_one' => $one->id,
             'milestone_two' => $two->id,
         ]);
 
         Course::create([
-            'course_code' => 102,
+            'key' => 'CS',
             'label' => 'BSCS',
             'milestone_one' => $one->id,
             'milestone_two' => $two->id,

@@ -5,14 +5,17 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\GetSectionsByUserType;
+use App\Services\GetGroupsByUserType;
 
 class ReportController extends Controller
 {
 
+    private $userGroup;
     private $userSection;
 
     public function __construct()
     {
+        $this->userGroup = new GetGroupsByUserType();
         $this->userSection = new GetSectionsByUserType();
     }
     
@@ -26,12 +29,12 @@ class ReportController extends Controller
         ];
     }
 
-    public function group($startDate, $endDate)
+    public function group($capstoneType, $status)
     {
         $user = request()->user();
 
         return [
-            'data' => $this->userSection->execute($user, ['startAt' => $startDate, 'endAt' => $endDate])
+            'data' => $this->userGroup->execute($user, ['capstoneType' => $capstoneType, 'status' => $status])
         ];
     }
 

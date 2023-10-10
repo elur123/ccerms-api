@@ -138,7 +138,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('report')->name('report.')->group(function () {
         Route::get('student/{startDate}/{endDate}', [ReportController::class, 'student'])->name('student');
-        Route::get('group/{startDate}/{endDate}', [ReportController::class, 'group'])->name('group');
+        Route::get('group/{captoneType}/{status}', [ReportController::class, 'group'])->name('group');
         Route::get('section/{startDate}/{endDate}', [ReportController::class, 'section'])->name('section');
     });
 });

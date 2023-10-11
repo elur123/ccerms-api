@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 use App\Models\DefenseType;
+use App\Models\DefenseSchedule;
 class DefenseTypeController extends Controller
 {
     /**
@@ -67,5 +68,19 @@ class DefenseTypeController extends Controller
     public function destroy(DefenseType $defensetype)
     {
         //
+    }
+
+    public function groupList(DefenseType $defensetype)
+    {
+        $groups = DefenseSchedule::query()
+        ->with('group')
+        ->where('type_id', $defensetype->id)
+        ->has('minute')
+        ->get()
+        ->pluck('group');
+
+        return response()->json([
+            'groups' => $groups
+        ], 200);
     }
 }

@@ -93,7 +93,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('defenses/{defense}/status', [DefenseScheduleController::class, 'status'])->name('defenses.status');
     Route::resource('defenses', DefenseScheduleController::class);
     
+    Route::get('defensetypes/{defensetype}/groupList', [DefenseTypeController::class, 'groupList'])->name('defensetypes.groups');
     Route::resource('defensetypes', DefenseTypeController::class);
+    
 
     Route::resource('defensevenues', DefenseVenueController::class);
 
@@ -140,5 +142,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('student/{startDate}/{endDate}', [ReportController::class, 'student'])->name('student');
         Route::get('group/{captoneType}/{status}', [ReportController::class, 'group'])->name('group');
         Route::get('section/{startDate}/{endDate}', [ReportController::class, 'section'])->name('section');
+        Route::get('minute/{type_id}/{group_id}', [ReportController::class, 'minute'])->name('minute');
     });
 });

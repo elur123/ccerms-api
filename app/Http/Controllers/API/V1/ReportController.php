@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\GetSectionsByUserType;
 use App\Services\GetGroupsByUserType;
 
+use App\Models\Minute;
 class ReportController extends Controller
 {
 
@@ -44,6 +45,19 @@ class ReportController extends Controller
 
         return [
             'data' => $this->userSection->execute($user, ['startAt' => $startDate, 'endAt' => $endDate])
+        ];
+    }
+
+    public function minute($type_id, $group_id)
+    {
+        $minute = Minute::query()
+        ->with('userPrepared', 'contents', 'group.members', 'group.panels', 'schedule.type', 'schedule.status')
+        ->where('group_id', $group_id)
+        ->whereRelation('schedule', 'type_id', $type_id)
+        ->first();
+
+        return [
+            'data' => $minute
         ];
     }
 }

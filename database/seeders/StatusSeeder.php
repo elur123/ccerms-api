@@ -13,7 +13,7 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
-        Status::truncate();
+        // Status::truncate();
         
         Status::upsert([
             ['label' => 'Pending'],

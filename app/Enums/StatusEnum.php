@@ -14,6 +14,7 @@ enum StatusEnum: int
     case RESCHED = 8;
     case ONGOING = 9;
     case DONE = 10;
+    case INACTIVE = 11;
 
     public static function toArray(): array
     {

@@ -20,6 +20,9 @@ class UserController extends Controller
     {
         $users = User::query()
         ->with('role', 'status')
+        ->when(request()->user()->role_id != RoleEnum::ADMIN->value, function($query) {
+            $query->where('role_id', '!=', RoleEnum::RESEARCH_COORDINATOR->value);
+        })
         ->where('role_id', '!=', RoleEnum::STUDENT->value)
         ->where('role_id', '!=', RoleEnum::ADMIN->value)
         ->get();

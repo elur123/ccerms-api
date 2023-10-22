@@ -10,6 +10,8 @@ use App\Services\StoreBoardSubmissionFile;
 use App\Services\StoreBoardCommentFile;
 use App\Services\UpdateBoardStatus;
 use App\Services\UpdateGroupCurrentStep;
+use App\Services\GetBoardRecipientSubmission;
+use App\Services\SendSubmissionNotification;
 use App\Http\Resources\BoardResource;
 use App\Http\Resources\BoardSubmissionResource;
 use App\Enums\StatusEnum;
@@ -32,7 +34,10 @@ class BoardController extends Controller
         Request $request, 
         Board $board, 
         ValidateBoardSubmission $validateSubmission,
-        StoreBoardSubmissionFile $fileSubmission)
+        StoreBoardSubmissionFile $fileSubmission,
+        GetBoardRecipientSubmission $boardRecipients,
+        SendSubmissionNotification $sendNotification
+    )
     {
         $request->validate([
             'file' => 'required',
@@ -56,6 +61,15 @@ class BoardController extends Controller
 
         $fileSubmission->execute($request, $submission);
 
+        // Notifications
+        $recipients = $boardRecipients->execute(['step_id' => $board->step_id, 'group_id' => $board->group_id]);
+        $options = [
+            'type' => $board->group->group_name.' new submission',
+            'message' => request()->user()->name.' submitted step '. $board->step->title,
+            'url' => '/admin/groups/show/'.$board->group_id
+        ];
+        $sendNotification->execute($recipients, $options);
+
         $board = Board::find($board->id);
         $board->load('personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user');
 
@@ -67,7 +81,9 @@ class BoardController extends Controller
     public function storeSubmissionComment(
         Request $request, 
         BoardSubmission $submission,
-        StoreBoardCommentFile $fileComment
+        StoreBoardCommentFile $fileComment,
+        GetBoardRecipientSubmission $boardRecipients,
+        SendSubmissionNotification $sendNotification
     )
     {
         $request->validate([
@@ -81,6 +97,16 @@ class BoardController extends Controller
 
         $fileComment->execute($request, $comment);
 
+        // Notifications
+        $recipients = $boardRecipients->execute(['step_id' => $submission->board->step_id, 'group_id' => $submission->board->group_id]);
+        $options = [
+            'type' => $submission->board->group->group_name.' new submission comment',
+            'message' => request()->user()->name.' commented in this submission '. $submission->board->step->title,
+            'url' => '/admin/groups/show/'.$submission->board->group_id
+        ];
+        $sendNotification->execute($recipients, $options);
+
+
         $submission->load('status', 'student', 'comments.user');
 
         return response()->json([
@@ -92,7 +118,9 @@ class BoardController extends Controller
         Request $request,  
         BoardSubmission $submission,
         UpdateBoardStatus $boardStatus,
-        UpdateGroupCurrentStep $groupStep
+        UpdateGroupCurrentStep $groupStep,
+        GetBoardRecipientSubmission $boardRecipients,
+        SendSubmissionNotification $sendNotification
     )
     {
         $request->validate([
@@ -110,6 +138,15 @@ class BoardController extends Controller
         $board->load('personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user');
 
         $groupStep->execute($board->group_id, $board->step_id);
+
+        // Notifications
+        $recipients = $boardRecipients->execute(['step_id' => $submission->board->step_id, 'group_id' => $submission->board->group_id]);
+        $options = [
+            'type' => $submission->board->group->group_name.' checked submission',
+            'message' => request()->user()->name.' checked this submission '. $submission->board->step->title,
+            'url' => '/admin/groups/show/'.$submission->board->group_id
+        ];
+        $sendNotification->execute($recipients, $options);
 
         $message = ['message' => 'success', 'status' => 200];
         pushMessage($board->group->key, 'boardUpdate', $message);

@@ -13,6 +13,8 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
+        Status::truncate();
+        
         Status::upsert([
             ['label' => 'Pending'],
             ['label' => 'Approved'],
@@ -24,6 +26,7 @@ class StatusSeeder extends Seeder
             ['label' => 'Resched'],
             ['label' => 'Ongoing'],
             ['label' => 'Done'],
+            ['label' => 'Incative'],
         ], ['label']);
     }
 }

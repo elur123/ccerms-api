@@ -75,6 +75,10 @@ class User extends Authenticatable
      * 
      * Relationship functions
      */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id');
+    }
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id');

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('type');
             $table->tinyText('message');
             $table->tinyText('url')->nullable();
-            $table->boolean('has_read')->default('false');
+            $table->boolean('has_read')->default(false);
             $table->timestamps();
         });
     }

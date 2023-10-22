@@ -33,6 +33,7 @@ use App\Http\Controllers\API\V1\DefenseVenueController;
 use App\Http\Controllers\API\V1\CronController;
 use App\Http\Controllers\API\V1\DashboardController;
 use App\Http\Controllers\API\V1\ReportController;
+use App\Http\Controllers\API\V1\NotificationController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -64,6 +65,8 @@ Route::prefix('cron')->name('cron.')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    Route::post('/notification/{notification}', [NotificationController::class, 'update'])->name('notification.update');
     
     Route::get('users/teachers', [UserController::class, 'teachers'])->name('users.teachers'); 
     Route::put('users/{user}/status', [UserController::class, 'status'])->name('users.status'); 

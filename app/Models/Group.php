@@ -54,6 +54,11 @@ class Group extends Model
         return $this->belongsToMany(User::class, 'group_panels', 'group_id', 'user_id');
     }
 
+    public function statisticians()
+    {
+        return $this->belongsToMany(User::class, 'group_statisticians', 'group_id', 'user_id');
+    }
+
     public function boards()
     {
         return $this->hasMany(Board::class, 'group_id');

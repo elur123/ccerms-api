@@ -13,7 +13,8 @@ class GroupAvailablePersonnelMembers {
         return [
             'members' => $this->members($group),
             'advisers' => $this->advisers($group),
-            'panels' => $this->panels($group)
+            'panels' => $this->panels($group),
+            'statisticians' => $this->statisticians($group)
         ];
     }
 
@@ -68,6 +69,31 @@ class GroupAvailablePersonnelMembers {
         ->pluck('user_id');
 
         $ids = $advisers->merge($panels)->all();
+
+        return User::query()
+        ->approved()
+        ->where('can_panel', true)
+        ->whereNotIn('id', $ids)
+        ->get()
+        ->map(fn($panel) => [
+            'id' => $panel->id,
+            'name' => $panel->name
+        ]);
+    }
+
+    public function statisticians(Group $group)
+    {
+        $advisers = $group->advisers()
+        ->pluck('user_id');
+
+        $panels = $group->panels()
+        ->pluck('user_id');
+
+        $statisticians = $group->statisticians()
+        ->pluck('user_id');
+
+        $ids = $advisers->merge($panels);
+        $ids = $ids->merge($statisticians)->all();
 
         return User::query()
         ->approved()

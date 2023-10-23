@@ -17,6 +17,7 @@ use App\Http\Controllers\API\V1\GroupMilestoneController;
 use App\Http\Controllers\API\V1\GroupMemberController;
 use App\Http\Controllers\API\V1\GroupAdviserController;
 use App\Http\Controllers\API\V1\GroupPanelController;
+use App\Http\Controllers\API\V1\GroupStatisticianController;
 use App\Http\Controllers\API\V1\StudentController;
 use App\Http\Controllers\API\V1\DefenseScheduleController;
 use App\Http\Controllers\API\V1\DefensePanelController;
@@ -119,6 +120,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('group-panel/{group}', [GroupPanelController::class, 'store'])->name('group-panel.store');
     Route::delete('group-panel/{group}/{panel}', [GroupPanelController::class, 'destroy'])->name('group-panel.destroy');
+
+    Route::post('group-statistician/{group}', [GroupStatisticianController::class, 'store'])->name('group-statistician.store');
+    Route::delete('group-statistician/{group}/{statistician}', [GroupStatisticianController::class, 'destroy'])->name('group-statistician.destroy');
 
     Route::post('minutetemplates/{template}/content', [MinuteTemplateController::class, 'addContent'])->name('minutetemplates.add.content');
     Route::delete('minutetemplates/{content}/content', [MinuteTemplateController::class, 'removeContent'])->name('minutetemplates.remove.content');

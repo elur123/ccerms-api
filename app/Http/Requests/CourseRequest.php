@@ -53,4 +53,9 @@ class CourseRequest extends FormRequest
             'milestone_two' => ['required']
         ];
     }
+
+    public function afterValidation()
+    {
+        $this->key = $this->course_code;
+    }
 }

@@ -54,8 +54,10 @@ class CourseRequest extends FormRequest
         ];
     }
 
-    public function afterValidation()
+    protected function prepareForValidation(): void
     {
-        $this->key = $this->course_code;
+        $this->merge([
+            'key' => $this->course_code;
+        ]);
     }
 }

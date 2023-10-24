@@ -27,8 +27,9 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CourseRequest $request)
+    public function store(Request $request)
     {
+        return $request->all();
         Course::create($request->validated());
 
         return $this->index();

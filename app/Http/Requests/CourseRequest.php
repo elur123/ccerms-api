@@ -57,7 +57,7 @@ class CourseRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'key' => $this->course_code
+            'key' => request()->course_code
         ]);
     }
 }

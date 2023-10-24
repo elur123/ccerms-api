@@ -24,6 +24,15 @@ class UserSeeder extends Seeder
                 'role_id' => RoleEnum::ADMIN->value,
                 'status_id' => StatusEnum::APPROVED->value
             ]);
+
+
+            User::create([
+                'name' => 'Charis Barbosa',
+                'email' => 'cbarbosa@umindanao.edu.ph',
+                'password' => Hash::make('password'),
+                'role_id' => RoleEnum::RESEARCH_COORDINATOR->value,
+                'status_id' => StatusEnum::APPROVED->value
+            ]);
         });
     }
 }

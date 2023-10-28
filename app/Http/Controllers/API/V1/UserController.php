@@ -53,7 +53,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         return response()->json([
-            'user' => new UserResource($user)
+            'userr' => new UserResource($user)
         ]);
     }
 

@@ -33,6 +33,7 @@ class UserResource extends JsonResource
             'can_advise' => $this->when($this->role_id !== RoleEnum::STUDENT->value, (boolean)$this->can_advise),
             'can_panel' => $this->when($this->role_id !== RoleEnum::STUDENT->value, (boolean)$this->can_panel),
             'can_teach' => $this->when($this->role_id !== RoleEnum::STUDENT->value, (boolean)$this->can_teach),
+            'can_stat' => $this->when($this->role_id !== RoleEnum::STUDENT->value, (boolean)$this->can_stat),
             'is_admin' => $this->when($this->role_id !== RoleEnum::STUDENT->value, $this->role_id === RoleEnum::ADMIN->value || $this->role_id === RoleEnum::RESEARCH_COORDINATOR->value),
         ];
     }

@@ -27,11 +27,16 @@ class UserObserver
                 $user->can_teach = true;
                 break;
 
+            case RoleEnum::STATISTICIAN->value:
+                $user->can_stat = true;
+                break;
+
             case RoleEnum::RESEARCH_COORDINATOR->value: 
             case RoleEnum::ADMIN->value:
                 $user->can_panel = true;
                 $user->can_advise = true;
                 $user->can_teach = true;
+                $use->can_stat = true;
                 break;
             
             default:

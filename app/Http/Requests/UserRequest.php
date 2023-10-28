@@ -57,7 +57,8 @@ class UserRequest extends FormRequest
             'student_id' => ['exclude_unless:role_id,'.RoleEnum::STUDENT->value, 'required', Rule::unique('student_details')],
             'can_advise' => ['sometimes', 'required', 'boolean'],
             'can_panel' => ['sometimes', 'required', 'boolean'],
-            'can_teach' => ['sometimes', 'required', 'boolean']
+            'can_teach' => ['sometimes', 'required', 'boolean'],
+            'can_stat' => ['sometimes', 'required', 'boolean']
         ];
     }
 
@@ -75,7 +76,8 @@ class UserRequest extends FormRequest
             'student_id' => ['exclude_unless:role_id,'.RoleEnum::STUDENT->value, 'required', Rule::unique('student_details')->ignore($this->student->id, 'user_id')],
             'can_advise' => ['sometimes', 'required', 'boolean'],
             'can_panel' => ['sometimes', 'required', 'boolean'],
-            'can_teach' => ['sometimes', 'required', 'boolean']
+            'can_teach' => ['sometimes', 'required', 'boolean'],
+            'can_stat' => ['sometimes', 'required', 'boolean']
         ];
     }
 }

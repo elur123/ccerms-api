@@ -10,4 +10,5 @@ enum RoleEnum: int
     case ADVISER = 4;
     case PANEL = 5;
     case STUDENT = 6;
+    case STATISTICIAN = 7;
 }

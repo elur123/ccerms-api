@@ -28,7 +28,8 @@ class User extends Authenticatable
         'address',
         'can_advise',
         'can_panel',
-        'can_teach'
+        'can_teach',
+        'can_stat'
     ];
 
     

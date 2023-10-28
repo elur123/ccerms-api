@@ -23,6 +23,7 @@ return new class extends Migration
             $table->boolean('can_advise')->default(false);
             $table->boolean('can_panel')->default(false);
             $table->boolean('can_teach')->default(false);
+            $table->boolean('can_stat')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

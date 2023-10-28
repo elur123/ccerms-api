@@ -20,6 +20,7 @@ class RoleSeeder extends Seeder
             ['label' => 'Adviser'],
             ['label' => 'Panel'],
             ['label' => 'Student'],
+            ['label' => 'Statistician'],
         ], ['label']);
     }
 }

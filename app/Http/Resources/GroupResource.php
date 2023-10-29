@@ -47,7 +47,8 @@ class GroupResource extends JsonResource
             'milestones' => GroupMilestoneResource::collection($this->whenLoaded('groupMilestone')),
             'members' => UserResource::collection($this->whenLoaded('members')),
             'advisers' => UserResource::collection($this->whenLoaded('advisers')),
-            'panels' => UserResource::collection($this->whenLoaded('panels'))
+            'panels' => UserResource::collection($this->whenLoaded('panels')),
+            'statisticians' => UserResource::collection($this->whenLoaded('statisticians'))
         ];
     }
 }

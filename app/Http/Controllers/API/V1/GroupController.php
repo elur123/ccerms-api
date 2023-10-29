@@ -49,7 +49,7 @@ class GroupController extends Controller
      */
     public function show(Group $group, GroupAvailablePersonnelMembers $gapm)
     {
-        $group->load('course', 'capstoneType', 'groupMilestone.currentMilestone', 'groupMilestone.milestone.milestoneList', 'members', 'advisers', 'panels');
+        $group->load('course', 'capstoneType', 'groupMilestone.currentMilestone', 'groupMilestone.milestone.milestoneList', 'members', 'advisers', 'panels', 'statisticians');
 
         $users_available = $gapm->execute($group);
 
@@ -57,7 +57,8 @@ class GroupController extends Controller
             'group' => new GroupResource($group),
             'members' => $users_available['members'],
             'advisers' => $users_available['advisers'],
-            'panels' => $users_available['panels']
+            'panels' => $users_available['panels'],
+            'statisticians' => $users_available['statisticians']
         ], 200);
     }
 

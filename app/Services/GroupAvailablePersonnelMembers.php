@@ -97,12 +97,12 @@ class GroupAvailablePersonnelMembers {
 
         return User::query()
         ->approved()
-        ->where('can_panel', true)
+        ->where('can_stat', true)
         ->whereNotIn('id', $ids)
         ->get()
-        ->map(fn($panel) => [
-            'id' => $panel->id,
-            'name' => $panel->name
+        ->map(fn($stat) => [
+            'id' => $stat->id,
+            'name' => $stat->name
         ]);
     }
 }

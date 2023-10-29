@@ -17,8 +17,11 @@ class StoreGroupBoards {
                 if ($type == 'adviser') {
                     $query->where('has_adviser', 1);
                 }
-                else{
+                else if ('panel') {
                     $query->where('has_panel', 1);
+                }
+                else{
+                    $query->where('has_statistician', 1);
                 }
             })
             ->get();

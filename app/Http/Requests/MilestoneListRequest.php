@@ -59,6 +59,7 @@ class MilestoneListRequest extends FormRequest
             'adviser_first' => ['boolean'],
             'has_adviser' => ['boolean'],
             'has_panel' => ['boolean'],
+            'has_stat' => ['boolean'],
             'milestone_id' => ['required']
         ];
     }
@@ -86,6 +87,7 @@ class MilestoneListRequest extends FormRequest
             'adviser_first' => ['boolean'],
             'has_adviser' => ['boolean'],
             'has_panel' => ['boolean'],
+            'has_stat' => ['boolean'],
             'milestone_id' => ['required']
         ];
     }

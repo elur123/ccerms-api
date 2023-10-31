@@ -25,7 +25,8 @@ class MilestoneListResource extends JsonResource
             'milestone' => new MilestoneResource($this->whenLoaded('milestone')),
             'adviser_first' => $this->adviser_first,
             'has_adviser' => $this->has_adviser,
-            'has_panel' => $this->has_panel
+            'has_panel' => $this->has_panel,
+            'has_stat' => $this->has_stat
         ];
     }
 }

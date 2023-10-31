@@ -111,8 +111,10 @@ class SectionStudentController extends Controller
         ->where('user_id', $student_id)
         ->delete();
 
+        $section->sectionStudent->load(['student', 'status']);
+
         return response()->json([
-            'students' => UserResource::collection($section->students),
+            'students' => SectionStudentResource::collection($section->sectionStudent),
             'available' => $availableStudents->execute($params = ['year_end' => $section->year_end_at, 'semester' => $section->section_type_id])
         ], 200); 
     }

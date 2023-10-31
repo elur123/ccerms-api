@@ -9,6 +9,7 @@ use App\Services\StoreImportStudent;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Imports\StudentImport;
+use App\Enums\RoleEnum;
 
 use App\Models\User;
 class StudentController extends Controller
@@ -32,6 +33,11 @@ class StudentController extends Controller
                 $query->orderBy(request()->orderBy, request()->orderFunction);
             }
             
+        })
+        ->when(request()->user()->role_id, function($query) {
+            if (request()->user()->role_id == RoleEnum::SUBJECT_TEACHER->value) {
+                
+            }
         })
         ->paginate(10);
 

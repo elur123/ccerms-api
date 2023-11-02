@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\SendActivationEmail;
 use App\Services\StoreImportStudent;
+use App\Services\GetSubjectTeacherStudents;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Imports\StudentImport;
@@ -14,10 +15,8 @@ use App\Enums\RoleEnum;
 use App\Models\User;
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+   
+    public function index(GetSubjectTeacherStudents $stStudents)
     {
         $students = User::query()
         ->with('studentDetails.course', 'status', 'role')
@@ -34,9 +33,11 @@ class StudentController extends Controller
             }
             
         })
-        ->when(request()->user()->role_id, function($query) {
+        ->when(request()->user()->role_id, function($query) use($stStudents) {
             if (request()->user()->role_id == RoleEnum::SUBJECT_TEACHER->value) {
-                
+                $studentIds = $stStudents->execute(request()->user()->id);
+
+                $query->whereIn('id', $studentIds);
             }
         })
         ->paginate(10);

@@ -18,6 +18,28 @@ class Group extends Model
         'is_done'
     ];
 
+    /**
+     * 
+     * Scope functions
+     */
+    public function scopeFilter($query, $keyword)
+    {
+        if (! $keyword) {
+            return $query;
+        }
+
+        $attributes = [
+            'groups.group_name',
+            'groups.title',
+        ];
+
+        $attributes = implode(', ', $attributes);
+
+        return $query->whereRaw("
+            (CONCAT_WS(' ', {$attributes}) like '%{$keyword}%')
+        ");
+    }
+
 
     /**
      * 

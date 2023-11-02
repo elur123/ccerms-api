@@ -8,6 +8,8 @@ use App\Http\Requests\GroupRequest;
 use App\Http\Resources\GroupResource;
 use App\Services\GroupAvailablePersonnelMembers;
 use App\Services\ValidateCourseMilestone;
+use App\Services\GetSubjectTeacherGroups;
+use App\Enums\RoleEnum;
 
 use App\Models\Group;
 class GroupController extends Controller
@@ -15,15 +17,32 @@ class GroupController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(GetSubjectTeacherGroups $stGroups)
     {
         $groups = Group::query()
         ->with('course', 'capstoneType', 'groupMilestone', 'members', 'panels')
-        ->get();
+        ->filter(request()->s)
+        ->when(request()->orderBy && request()->orderFunction, function ($query) {
+            if (request()->orderBy == 'course') 
+            {
+                $query->orderBy('courses.label', request()->orderFunction);
+            }
+            else
+            {
+                $query->orderBy(request()->orderBy, request()->orderFunction);
+            }
+            
+        })
+        ->when(request()->user()->role_id, function($query) use($stGroups) {
+            if (request()->user()->role_id == RoleEnum::SUBJECT_TEACHER->value) {
+                $groupIds = $stGroups->execute(request()->user()->id);
 
-        return response()->json([
-            'groups' => GroupResource::collection($groups)
-        ], 200);
+                $query->whereIn('id', $groupIds);
+            }
+        })
+        ->paginate(10);
+
+        return GroupResource::collection($groups);
     }
 
     /**

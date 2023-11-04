@@ -16,8 +16,10 @@ use App\Models\User;
 class StudentController extends Controller
 {
    
-    public function index(GetSubjectTeacherStudents $stStudents)
+    public function index()
     {
+        $stStudents = new GetSubjectTeacherStudents();
+
         $students = User::query()
         ->with('studentDetails.course', 'status', 'role')
         ->student()

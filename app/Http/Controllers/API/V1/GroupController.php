@@ -17,8 +17,10 @@ class GroupController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(GetSubjectTeacherGroups $stGroups)
-    {
+    public function index()
+    {   
+        $stGroups = new GetSubjectTeacherGroups();
+
         $groups = Group::query()
         ->with('course', 'capstoneType', 'groupMilestone', 'members', 'panels')
         ->filter(request()->s)

@@ -37,6 +37,28 @@ class Section extends Model
 
     /**
      * 
+     * Scope functions
+    */
+    public function scopeFilter($query, $keyword)
+    {
+        if (! $keyword) {
+            return $query;
+        }
+
+        $attributes = [
+            'sections.section_code',
+            'sections.room_number',
+        ];
+
+        $attributes = implode(', ', $attributes);
+
+        return $query->whereRaw("
+            (CONCAT_WS(' ', {$attributes}) like '%{$keyword}%')
+        ");
+    }
+
+    /**
+     * 
      * Relationship functions
      */
 

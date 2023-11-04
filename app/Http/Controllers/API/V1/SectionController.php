@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\SectionRequest;
 use App\Http\Resources\SectionResource;
+use App\Enums\RoleEnum;
 
 use App\Models\Section;
 class SectionController extends Controller
@@ -17,11 +18,18 @@ class SectionController extends Controller
     {
         $sections = Section::query()
         ->with('teacher', 'sectionType', 'capstoneType', 'sectionStudent.status', 'sectionStudent.student', 'groups.groupMilestone', 'status')
-        ->get();
+        ->filter(request()->s)
+        ->when(request()->orderBy && request()->orderFunction, function ($query) {
+            $query->orderBy(request()->orderBy, request()->orderFunction);   
+        })
+        ->when(request()->user()->role_id, function($query) {
+            if (request()->user()->role_id == RoleEnum::SUBJECT_TEACHER->value) {
+                $query->where('user_id', request()->user()->id);
+            }
+        })
+        ->paginate(10);
 
-        return response()->json([
-            'sections' => SectionResource::collection($sections)
-        ], 200);
+        return SectionResource::collection($sections);
     }
 
     /**

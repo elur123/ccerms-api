@@ -15,8 +15,13 @@ use App\Models\SectionStudent;
 use App\Models\SectionGroup;
 use App\Models\User;
 use App\Models\Group;
+use App\Models\GroupAdviser;
+use App\Models\GroupPanel;
+use App\Models\GroupMember;
 use App\Models\Course;
 use App\Models\DefenseSchedule;
+use App\Models\BoardSubmission;
+use App\Models\ResearchArchive;
 class DashboardController extends Controller
 {
     
@@ -27,6 +32,33 @@ class DashboardController extends Controller
         
         if ($user->role_id === RoleEnum::STUDENT->value) 
         {
+            $data->submissionsCounts = 0;
+            $data->schedules = [];
+            $data->capstoneOne = ['label' => ['Done', 'Ongoing'], 'data' => [0, 100]];
+            $data->capstoneTwo = ['label' => ['Done', 'Ongoing'], 'data' => [0, 100]];
+
+            $group = Group::whereRelation('members', 'user_id', $user->id)
+            ->with('groupMilestone')
+            ->first();
+
+            if ($group != null) {
+                $data->submissionsCounts = BoardSubmission::whereRelation('board', 'group_id', $group->id)
+                ->count();
+
+                $milestoneOne = $group->groupMilestone()
+                ->where('capstone_type_id', CapstoneTypeEnum::ONE->value)
+                ->first();
+
+                $milestoneTwo = $group->groupMilestone()
+                ->where('capstone_type_id', CapstoneTypeEnum::TWO->value)
+                ->first();
+
+                $data->capstoneOne['data'][0] = $milestoneOne->progress;
+                $data->capstoneOne['data'][1] = 100 - doubleval($milestoneOne->progress);
+
+                $data->capstoneTwo['data'][0] = $milestoneTwo->progress;
+                $data->capstoneTwo['data'][1] = 100 - doubleval($milestoneTwo->progress);
+            }
             
         }
         else
@@ -39,8 +71,8 @@ class DashboardController extends Controller
             $data->researchArchivesCount = 0;
             $data->coursesCounts = 0;
             $data->groupsCounts = 0;
-            $data->capstoneOne = [ 'label' => [], 'data' => []];
-            $data->capstoneTwo = [ 'label' => [], 'data' => []];
+            $data->capstoneOne = ['label' => [], 'data' => []];
+            $data->capstoneTwo = ['label' => [], 'data' => []];
             $data->schedules = [];
 
 
@@ -60,7 +92,7 @@ class DashboardController extends Controller
             ->approved()
             ->count();
 
-            $data->courseCounts = Course::count();
+            $data->coursesCounts = Course::count();
 
             switch ($user->role_id) {
 
@@ -82,11 +114,27 @@ class DashboardController extends Controller
                     break;
                 
                 case RoleEnum::ADVISER->value:
-                    
+                    $studentsCount = GroupMember::whereRelation('student', 'status_id', StatusEnum::APPROVED->value)
+                    ->whereRelation('group.advisers', 'user_id', $user->id)
+                    ->count();
+
+                    $groupsCounts = GroupAdviser::where('user_id', $user->id)
+                    ->count();
+
+                    $data->studentsCount = $studentsCount;
+                    $data->groupsCounts = $groupsCounts;
                     break;
 
                 case RoleEnum::PANEL->value:
-                    
+                    $studentsCount = GroupMember::whereRelation('student', 'status_id', StatusEnum::APPROVED->value)
+                    ->whereRelation('group.panels', 'user_id', $user->id)
+                    ->count();
+
+                    $groupsCounts = GroupPanel::where('user_id', $user->id)
+                    ->count();
+
+                    $data->studentsCount = $studentsCount;
+                    $data->groupsCounts = $groupsCounts;                    
                     break;
 
                 default:
@@ -135,15 +183,16 @@ class DashboardController extends Controller
 
                     $data->capstoneTwo['label'] = $capstoneTwo->pluck('group_name');
                     $data->capstoneTwo['data'] = $capstoneTwo->pluck('capstoneOnePercent');
-
-                    $data->schedules = DefenseScheduleResource::collection(DefenseSchedule::query()
-                    ->with('group', 'type', 'status')
-                    ->whereDate('start_at', Carbon::now())
-                    ->get());
-
                     break;
             }
         }
+
+        $data->researchArchivesCount = ResearchArchive::count();
+
+        $data->schedules = DefenseScheduleResource::collection(DefenseSchedule::query()
+        ->with('group', 'type', 'status')
+        ->whereDate('start_at', Carbon::now())
+        ->get());
 
         return response()->json([
             'data' => $data

@@ -20,16 +20,26 @@ class UserController extends Controller
     {
         $users = User::query()
         ->with('role', 'status')
+        ->filter(request()->s)
         ->when(request()->user()->role_id != RoleEnum::ADMIN->value, function($query) {
             $query->where('role_id', '!=', RoleEnum::RESEARCH_COORDINATOR->value);
         })
+        ->when(request()->orderBy && request()->orderFunction, function ($query) {
+            if (request()->orderBy == 'status') 
+            {
+                $query->orderBy('status.label', request()->orderFunction);
+            }
+            else
+            {
+                $query->orderBy(request()->orderBy, request()->orderFunction);
+            }
+            
+        })
         ->where('role_id', '!=', RoleEnum::STUDENT->value)
         ->where('role_id', '!=', RoleEnum::ADMIN->value)
-        ->get();
+        ->paginate(10);
 
-        return response()->json([
-            'users' => UserResource::collection($users)
-        ]);
+        return UserResource::collection($users);
     }
 
     /**

@@ -12,6 +12,8 @@ use App\Services\GetSubjectTeacherGroups;
 use App\Enums\RoleEnum;
 
 use App\Models\Group;
+use App\Models\GroupAdviser;
+use App\Models\GroupPanel;
 class GroupController extends Controller
 {
     /**
@@ -36,10 +38,31 @@ class GroupController extends Controller
             
         })
         ->when(request()->user()->role_id, function($query) use($stGroups) {
-            if (request()->user()->role_id == RoleEnum::SUBJECT_TEACHER->value) {
-                $groupIds = $stGroups->execute(request()->user()->id);
+            switch (request()->user()->role_id) {
+                case RoleEnum::SUBJECT_TEACHER->value:
+                    $groupIds = $stGroups->execute(request()->user()->id);
 
-                $query->whereIn('id', $groupIds);
+                    $query->whereIn('id', $groupIds);
+                    break;
+
+                case RoleEnum::ADVISER->value:
+                    $groupIds = GroupAdviser::where('user_id', request()->user()->id)
+                    ->get()
+                    ->pluck('group_id');
+
+                    $query->whereIn('id', $groupIds);
+                    break;
+
+                case RoleEnum::PANEL->value:
+                    $groupIds = GroupPanel::where('user_id', request()->user()->id)
+                    ->get()
+                    ->pluck('group_id');
+                    
+                    $query->whereIn('id', $groupIds);
+                    break;
+                
+                default:
+                    break;
             }
         })
         ->paginate(10);

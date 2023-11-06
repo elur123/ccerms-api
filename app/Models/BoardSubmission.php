@@ -18,6 +18,7 @@ class BoardSubmission extends Model
         'file',
         'file_url',
         'progress',
+        'checked_at'
     ];
 
     /**

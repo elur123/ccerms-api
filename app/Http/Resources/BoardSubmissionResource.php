@@ -28,8 +28,11 @@ class BoardSubmissionResource extends JsonResource
             'file' => $this->file,
             'file_url' => config('app.url') .'/'. str_replace('public', 'storage', $this->file_url),
             'progress' => $this->progress,
-            'created_at' => $this->created_at->format('M d, Y'),
-            'updated_at' => $this->updated_at->format('M d, Y')
+            'created_at' => $this->created_at->format('M d, Y H:i:s'),
+            'updated_at' => $this->updated_at->format('M d, Y'),
+            'checked_at' => $this->when($this->checked_at != null, function() {
+                return date('M d, Y H:i:s', strtotime($this->checked_at));
+            })
         ];
     }
 }

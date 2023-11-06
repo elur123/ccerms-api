@@ -20,6 +20,20 @@ use App\Models\Board;
 use App\Models\BoardSubmission;
 class BoardController extends Controller
 {
+
+    public function index()
+    {
+        $boards = Board::query()
+        ->with('group', 'step', 'personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user')
+        ->join('groups', 'boards.group_id', 'groups.id')
+        ->join('milestone_lists', 'boards.step_id', 'milestone_lists.id')
+        ->join('users', 'boards.personnel_id', 'users.id')
+        ->filter(request()->s)
+        ->has('submissions')
+        ->paginate(10);
+
+        return BoardResource::collection($boards);
+    }
     
     public function show($group_id, $step_id, GetGroupBoards $groupBoards)
     {
@@ -129,7 +143,8 @@ class BoardController extends Controller
 
         $submission->update([
             'status_id' => $request->progress < 100 ? StatusEnum::DECLINED->value : StatusEnum::APPROVED,
-            'progress' => doubleval($request->progress)
+            'progress' => doubleval($request->progress),
+            'checked_at' => date('Y-m-d H:i:s')
         ]);
 
         $boardStatus->execute($submission->board_id, $request->progress);

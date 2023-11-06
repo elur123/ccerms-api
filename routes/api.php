@@ -134,6 +134,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('research-archives/{member}/member', [ResearchArchiveController::class, 'removeMember'])->name('research-archives.member.destroy');
     Route::resource('research-archives', ResearchArchiveController::class);
 
+    Route::get('boards', [BoardController::class, 'index'])->name('boards.index');
     Route::get('boards/{group_id}/{step_id}', [BoardController::class, 'show'])->name('boards.show');
     Route::post('boards/{board}', [BoardController::class, 'storeSubmission'])->name('boards.submission.store');
     Route::post('boards/{submission}/comment', [BoardController::class, 'storeSubmissionComment'])->name('boards.submission.comment.store');

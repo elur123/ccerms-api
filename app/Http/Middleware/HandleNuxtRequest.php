@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Resources\NotificationResource;
+use App\Http\Resources\UserResource;
 class HandleNuxtRequest
 {
     /**
@@ -22,12 +23,13 @@ class HandleNuxtRequest
             $user = Auth::user();
             $notifications = $user->notifications()
             ->where('has_read', false)
+            ->latest()
             ->get();
             $response = $next($request);
 
             // Append user data to the response
             $response->setData(array_merge($response->getData(true), [
-                'user' => $user,
+                'user' => UserResource::make($user),
                 'notifications' => NotificationResource::collection($notifications)
             ]));
             

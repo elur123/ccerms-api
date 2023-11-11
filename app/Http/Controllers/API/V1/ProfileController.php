@@ -42,7 +42,7 @@ class ProfileController extends Controller
         if ($request->hasFile('image_url')) {
             $file = $request->file('image_url');
             $fileName = $file->getClientOriginalName();
-            $filePath = $file->storeAs('public/files/profiles/'.$profile->id, $fileName);
+            $filePath = $file->storeAs('/'.$profile->id, $fileName, 'profiles');
 
             $profile->update([
                 'image_url' => $filePath

@@ -67,6 +67,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
+    Route::get('/notification', [NotificationController::class, 'index'])->name('notification.index');
+    Route::put('/notification/readAll', [NotificationController::class, 'readAll'])->name('notification.read-all');
     Route::post('/notification/{notification}', [NotificationController::class, 'update'])->name('notification.update');
     
     Route::get('users/teachers', [UserController::class, 'teachers'])->name('users.teachers'); 
@@ -135,6 +137,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('research-archives', ResearchArchiveController::class);
 
     Route::get('boards', [BoardController::class, 'index'])->name('boards.index');
+    Route::get('boards/{submission}/download', [BoardController::class, 'download'])->name('boards.submission.download')->withoutMiddleware('auth:sanctum');
     Route::get('boards/{group_id}/{step_id}', [BoardController::class, 'show'])->name('boards.show');
     Route::post('boards/{board}', [BoardController::class, 'storeSubmission'])->name('boards.submission.store');
     Route::post('boards/{submission}/comment', [BoardController::class, 'storeSubmissionComment'])->name('boards.submission.comment.store');

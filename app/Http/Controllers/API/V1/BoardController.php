@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Services\GetGroupBoards;
 use App\Services\ValidateBoardSubmission;
 use App\Services\StoreBoardSubmissionFile;
@@ -24,6 +25,7 @@ class BoardController extends Controller
     public function index()
     {
         $boards = Board::query()
+        ->select('boards.*')
         ->with('group', 'step', 'personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user')
         ->join('groups', 'boards.group_id', 'groups.id')
         ->join('milestone_lists', 'boards.step_id', 'milestone_lists.id')
@@ -169,5 +171,17 @@ class BoardController extends Controller
         return response()->json([
             'board' => BoardResource::make($board)
         ], 200);
+    }
+
+    public function download(BoardSubmission $submission)
+    {
+        if (!Storage::disk('public')->exists(str_replace('public/', '', $submission->file_url))) {
+            return [
+                'status_code' => 404,
+                'messsage' => 'File not found'
+            ];
+        }
+
+        return Storage::download($submission->file_url);
     }
 }

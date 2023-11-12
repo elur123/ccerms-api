@@ -19,6 +19,7 @@ class UpdateGroupCurrentStep {
         $boardDone = $group->boards()
         ->where('step_id', $step_id)
         ->where('progress', 100)
+        ->where('status_id', StatusEnum::APPROVED->value)
         ->count();
 
         $list = MilestoneList::find($step_id);

@@ -18,10 +18,10 @@ class GetGroupBoards {
         ->where('type', 'adviser')
         ->first();
 
-        $adviserDone = $adviserBoard !== null && $adviserBoard->status_id === StatusEnum::APPROVED->value;
+        $adviserDone = $adviserBoard !== null && ($adviserBoard->status_id === StatusEnum::APPROVED->value && $adviserBoard->progress == 100);
 
         return Board::query()
-        ->with('personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user')
+        ->with('status', 'personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user')
         ->where('group_id', $group_id)
         ->where('step_id', $step_id)
         ->when($milestoneList->adviser_first, function($query) use($adviserDone) {

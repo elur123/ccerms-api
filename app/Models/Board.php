@@ -61,6 +61,11 @@ class Board extends Model
         return $this->belongsTo(User::class, 'personnel_id');
     }
 
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id');
+    }
+
     public function submissions()
     {
         return $this->hasMany(BoardSubmission::class, 'board_id')->latest();

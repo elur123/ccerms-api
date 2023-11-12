@@ -19,6 +19,7 @@ use App\Enums\StatusEnum;
 
 use App\Models\Board;
 use App\Models\BoardSubmission;
+use App\Models\BoardComment;
 class BoardController extends Controller
 {
 
@@ -87,7 +88,35 @@ class BoardController extends Controller
         $sendNotification->execute($recipients, $options);
 
         $board = Board::find($board->id);
-        $board->load('personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user');
+        $board->load('status', 'personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user');
+
+        return response()->json([
+            'board' => BoardResource::make($board)
+        ], 200);
+    }
+
+    public function updateSubmission(
+        Request $request, 
+        Board $board,
+        StoreBoardSubmissionFile $fileSubmission
+    )
+    {
+        $request->validate([
+            'id' => 'required',
+            'comment' => 'required'
+        ]);
+
+        $submission = $board->submissions()
+        ->where('id', $request->id)
+        ->first();
+
+        $submission->details = $request->comment;
+        $submission->save();
+
+        $fileSubmission->execute($request, $submission);
+
+        $board = Board::find($board->id);
+        $board->load('status', 'personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user');
 
         return response()->json([
             'board' => BoardResource::make($board)
@@ -140,19 +169,20 @@ class BoardController extends Controller
     )
     {
         $request->validate([
-            'progress' => ['required', 'numeric', 'max:100']
+            'status' => ['required'],
+            'progress' => ['required', 'numeric', 'min:1', 'max:100']
         ]);
 
         $submission->update([
-            'status_id' => $request->progress < 100 ? StatusEnum::DECLINED->value : StatusEnum::APPROVED,
+            'status_id' => $request->status,
             'progress' => doubleval($request->progress),
             'checked_at' => date('Y-m-d H:i:s')
         ]);
 
-        $boardStatus->execute($submission->board_id, $request->progress);
+        $boardStatus->execute($submission->board_id, $request->progress, $request->status);
 
         $board = Board::find($submission->board_id);
-        $board->load('personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user');
+        $board->load('status', 'personnel', 'submissions.status', 'submissions.student', 'submissions.comments.user');
 
         $groupStep->execute($board->group_id, $board->step_id);
 
@@ -183,5 +213,17 @@ class BoardController extends Controller
         }
 
         return Storage::download($submission->file_url);
+    }
+
+    public function downloadCommentFile(BoardComment $comment)
+    {
+        if (!Storage::disk('public')->exists(str_replace('public/', '', $comment->file_url))) {
+            return [
+                'status_code' => 404,
+                'messsage' => 'File not found'
+            ];
+        }
+
+        return Storage::download($comment->file_url);
     }
 }

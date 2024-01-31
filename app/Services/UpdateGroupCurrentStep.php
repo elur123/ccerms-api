@@ -25,6 +25,7 @@ class UpdateGroupCurrentStep {
         $list = MilestoneList::find($step_id);
         $order = $list->order_by + 1;
         $milestoneId = $list->milestone_id;
+        $hasEndorsement = $list->has_endorsement;
 
         $milestoneBoards = $group->boards()
         ->whereRelation('step', 'milestone_id', $milestoneId)
@@ -44,6 +45,15 @@ class UpdateGroupCurrentStep {
             $findNext = MilestoneList::where('milestone_id', $milestoneId)
             ->where('order_by', $order)
             ->first();
+
+            if ($hasEndorsement) 
+            {
+                $group->groupMilestone()
+                ->where('milestone_id', $milestoneId)
+                ->update([
+                    'endorse_list_id' => $step_id
+                ]);
+            }
 
             if ($findNext != null) 
             {

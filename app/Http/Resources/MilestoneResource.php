@@ -21,7 +21,7 @@ class MilestoneResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'capstone_type_id' => $this->capstone_type_id,
-            'capstoneType' => new CapstoneTypeResource($this->whenLoaded('capstoneType')),
+            'capstoneType' => CapstoneTypeResource::make($this->whenLoaded('capstoneType')),
             'milestonList' => MilestoneListResource::collection($this->whenLoaded('milestoneList'))
         ];
     }

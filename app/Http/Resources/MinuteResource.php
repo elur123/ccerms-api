@@ -23,9 +23,9 @@ class MinuteResource extends JsonResource
             'prepared_by' => $this->prepared_by,
             'template_id' => $this->template_id,
             'group_id' => $this->group_id,
-            'schedule' => new DefenseScheduleResource($this->whenLoaded('schedule')),
-            'userPrepared' => new UserResource($this->whenLoaded('user')), 
-            'group' => new GroupResource($this->whenLoaded('group')),
+            'schedule' => DefenseScheduleResource::make($this->whenLoaded('schedule')),
+            'userPrepared' => UserResource::make($this->whenLoaded('user')), 
+            'group' => GroupResource::make($this->whenLoaded('group')),
             'contents' => $this->whenLoaded('contents')
         ];
     }

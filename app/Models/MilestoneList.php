@@ -18,7 +18,8 @@ class MilestoneList extends Model
         'adviser_first',
         'has_adviser',
         'has_panel',
-        'has_stat'
+        'has_stat',
+        'has_endorsement'
     ];
 
     /**

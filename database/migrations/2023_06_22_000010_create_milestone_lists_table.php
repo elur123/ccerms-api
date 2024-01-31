@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('has_adviser')->default(false);
             $table->boolean('has_panel')->default(false);
             $table->boolean('has_stat')->default(false);
+            $table->boolean('has_endorsement')->default(false);
             $table->timestamps();
         });
     }

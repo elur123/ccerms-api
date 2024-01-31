@@ -44,7 +44,7 @@ class GroupResource extends JsonResource
             }),
             'course' => CourseResource::make($this->whenLoaded('course')),
             'capstoneType' => CapstoneTypeResource::make($this->whenLoaded('capstoneType')),
-            'milestones' => GroupMilestoneResource::collection($this->whenLoaded('groupMilestone')),
+            'milestones' => $this->customGroupMilestone,
             'members' => UserResource::collection($this->whenLoaded('members')),
             'advisers' => UserResource::collection($this->whenLoaded('advisers')),
             'panels' => UserResource::collection($this->whenLoaded('panels')),

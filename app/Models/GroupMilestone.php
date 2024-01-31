@@ -15,6 +15,7 @@ class GroupMilestone extends Model
         'milestone_id',
         'milestone_list_id',
         'capstone_type_id',
+        'endorse_list_id',
         'is_open',
     ];
 
@@ -36,5 +37,10 @@ class GroupMilestone extends Model
     public function currentMilestone()
     {
         return $this->belongsTo(MilestoneList::class, 'milestone_list_id');
+    }
+
+    public function endorseMilestone()
+    {
+        return $this->belongsTo(MilestoneList::class, 'endorse_list_id');
     }
 }

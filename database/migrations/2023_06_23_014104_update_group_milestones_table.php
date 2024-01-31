@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('milestone_id')->constrained('milestones');
             $table->foreignId('milestone_list_id')->nullable()->constrained('milestone_lists');
             $table->foreignId('capstone_type_id')->constrained('capstone_types');
+            $table->foreignId('endorse_list_id')->nullable()->constrained('milestone_lists');
             $table->boolean('is_open')->default(true);
         });
     }

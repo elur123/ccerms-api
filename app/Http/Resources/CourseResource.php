@@ -21,8 +21,8 @@ class CourseResource extends JsonResource
             'label' => $this->label,
             'milestone_one' => $this->milestone_one,
             'milestone_two' => $this->milestone_two,
-            'milestoneOne' => new MilestoneResource($this->whenLoaded('milestoneOne')),
-            'milestoneTwo' => new MilestoneResource($this->whenLoaded('milestoneTwo')),
+            'milestoneOne' => MilestoneResource::make($this->whenLoaded('milestoneOne')),
+            'milestoneTwo' => MilestoneResource::make($this->whenLoaded('milestoneTwo')),
         ];
     }
 }

@@ -17,17 +17,19 @@ class GroupMilestoneResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'id' => $this->id,
-            'group_id' => $this->group_id,
-            'progress' => $this->progress,
-            'is_open' => $this->is_open,
-            'milestone_id' => $this->milestone_id,
-            'milestone_list_id' => $this->milestone_list_id,
-            'group' => new GroupResource($this->whenLoaded('group')),
-            'milestone' => new MilestoneResource($this->whenLoaded('milestone')),
-            'currentMilestone' => new MilestoneListResource($this->whenLoaded('currentMilestone')),
-            'capstone_type_id' => $this->capstone_type_id
-        ];
+        return $this->collection();
+        // return [
+        //     'id' => $this->id,
+        //     'group_id' => $this->group_id,
+        //     'progress' => $this->progress,
+        //     'is_open' => $this->is_open,
+        //     'milestone_id' => $this->milestone_id,
+        //     'milestone_list_id' => $this->milestone_list_id,
+        //     'group' => GroupResource::make($this->whenLoaded('group')),
+        //     'milestone' => MilestoneResource::make($this->whenLoaded('milestone')),
+        //     'currentMilestone' => MilestoneListResource::make($this->whenLoaded('currentMilestone')),
+        //     'latestEndorsed' => MilestoneResource::make($this->whenLoaded('endorseMilestone')),
+        //     'capstone_type_id' => $this->capstone_type_id
+        // ];
     }
 }

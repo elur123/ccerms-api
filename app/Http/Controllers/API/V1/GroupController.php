@@ -14,6 +14,7 @@ use App\Enums\RoleEnum;
 use App\Models\Group;
 use App\Models\GroupAdviser;
 use App\Models\GroupPanel;
+use App\Models\BoardSubmission;
 class GroupController extends Controller
 {
     /**
@@ -91,14 +92,66 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Group $group, GroupAvailablePersonnelMembers $gapm)
+    public function show(Group $group, GroupAvailablePersonnelMembers $availablePersonnels)
     {
-        $group->load('course', 'capstoneType', 'groupMilestone.currentMilestone', 'groupMilestone.milestone.milestoneList', 'members', 'advisers', 'panels', 'statisticians');
+        $group->load(
+            'course', 
+            'capstoneType', 
+            'groupMilestone.currentMilestone', 
+            'groupMilestone.milestone.milestoneList', 
+            'members', 
+            'advisers', 
+            'panels', 
+            'statisticians'
+        );
 
-        $users_available = $gapm->execute($group);
+        $group->customGroupMilestone = $group->groupMilestone
+        ->map(function($milestone) use($group) {
+
+            $milestone->milestone->milestonList = $milestone->milestone->milestoneList
+            ->map(function($list) use($group) {
+                $lastUpdated = null;
+                $submissions = BoardSubmission::query()
+                ->whereRelation('board', function($query) use($group, $list) {
+                    $query->where('group_id', $group->id)
+                    ->where('step_id', $list->id);
+                })
+                ->latest('updated_at')
+                ->first();
+
+                $lastUpdated = $submissions?->updated_at ?? null;
+
+                return [
+                    'id' => $list->id,
+                    'title' => $list->title,
+                    'description' => $list->description,
+                    'order_by' => $list->order_by,
+                    'percent' => $list->percent,
+                    'has_stat' => $list->has_stat,
+                    'has_panel' => $list->has_panel,
+                    'has_adviser' => $list->has_adviser,
+                    'adviser_first' => $list->adviser_first,
+                    'last_updated' => $lastUpdated != null ? date('M d, Y H:i:s', strtotime($lastUpdated)) : null,
+                ];
+            });
+
+            return [
+                'id' => $milestone->id,
+                'group_id' => $milestone->group_id,
+                'capstone_type_id' => $milestone->capstone_type_id,
+                'milestone_id' => $milestone->milestone_id,
+                'milestone_list_id' => $milestone->milestone_list_id,
+                'progress' => $milestone->progress,
+                'is_open' => $milestone->is_open,
+                'milestone' => $milestone->milestone,
+                'currentMilestone' => $milestone->currentMilestone
+            ];
+        });
+
+        $users_available = $availablePersonnels->execute($group);
 
         return response()->json([
-            'group' => new GroupResource($group),
+            'group' => GroupResource::make($group),
             'members' => $users_available['members'],
             'advisers' => $users_available['advisers'],
             'panels' => $users_available['panels'],

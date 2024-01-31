@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 use App\Http\Resources\MilestoneResource;
+use App\Enums\RoleEnum;
 class MilestoneListResource extends JsonResource
 {
     /**
@@ -22,7 +23,7 @@ class MilestoneListResource extends JsonResource
             'percent' => $this->percent,
             'milestone_id' => $this->milestone_id,
             'order_by' => $this->order_by,
-            'milestone' => new MilestoneResource($this->whenLoaded('milestone')),
+            'milestone' => MilestoneResource::make($this->whenLoaded('milestone')),
             'adviser_first' => $this->adviser_first,
             'has_adviser' => $this->has_adviser,
             'has_panel' => $this->has_panel,
